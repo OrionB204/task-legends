@@ -65,10 +65,7 @@ export function AuthForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-4 pattern-grid relative">
-            <div className="fixed top-0 left-0 w-full bg-red-600 text-white p-4 text-center z-[99999] animate-pulse font-bold text-xl">
-                TESTE DE CONEXÃO: SE VOCÊ VÊ ISSO, O CÓDIGO ATUALIZOU!
-            </div>
+        <div className="min-h-screen flex items-center justify-center bg-background p-4 pattern-grid">
             <Card className="w-full max-w-md pixel-border shadow-xl bg-card/95 backdrop-blur">
                 <CardHeader className="text-center space-y-1">
                     <CardTitle className="text-2xl font-bold tracking-tighter glow-text">TasKLegends</CardTitle>
