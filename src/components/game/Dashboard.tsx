@@ -19,7 +19,6 @@ import { CustomRewardsShop } from './CustomRewardsShop';
 // import { DeathScreen } from './DeathScreen'; // Removido para usar banner
 import { SupportTicketForm } from '@/components/support/SupportTicketForm';
 import { SocialTabs } from '@/components/social/SocialTabs';
-import { BackgroundMusic } from './BackgroundMusic';
 import { AlertTriangle, HeartPulse } from 'lucide-react';
 import { FriendsPanel } from '@/components/social/FriendsPanel';
 import { PvPArena } from '@/components/pvp/PvPArena';
@@ -421,8 +420,6 @@ export function Dashboard() {
       <ClassSelection open={classOpen} onOpenChange={setClassOpen} />
 
       <SupportTicketForm open={supportOpen} onOpenChange={setSupportOpen} />
-
-      <BackgroundMusic />
     </div>
   );
 }

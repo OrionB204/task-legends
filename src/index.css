@@ -114,19 +114,6 @@
 }
 
 @layer components {
-
-  /* EMERGENCY HIDE for legacy floating buttons that may persist in cache/deploy */
-  /* EMERGENCY HIDE for legacy floating buttons that may persist in cache/deploy */
-  .fixed.bottom-4.right-4,
-  .fixed.bottom-20.right-4,
-  div[class*="fixed"][class*="bottom-"][class*="right-"] button,
-  div[class*="fixed"][class*="bottom-"][class*="right-"] {
-    display: none !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
-  }
-
   .pixel-border {
     box-shadow:
       0 0 0 2px hsl(var(--border)),
