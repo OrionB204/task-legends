@@ -1,0 +1,91 @@
+/* Habitica Design System - Final Polish */
+.habitica-avatar-frame {
+  background: #362863;
+  /* Roxo ligeiramente mais claro para visibilidade */
+  border: 4px solid #ffb700;
+  image-rendering: pixelated !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  overflow: visible !important;
+}
+
+.habitica-body {
+  width: 140% !important;
+  /* Aumentado para preencher todo o quadro */
+  height: 140% !important;
+  object-fit: contain;
+  z-index: 10;
+  mix-blend-mode: multiply;
+  /* Remove o branco */
+  filter: contrast(120%) brightness(110%);
+  position: relative;
+  bottom: -10%;
+}
+
+/* Equipment Layers - Habitica Proportions */
+.habitica-layer {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+  color: white;
+}
+
+.layer-hat {
+  z-index: 50;
+  top: -5%;
+  font-size: 0.6em;
+}
+
+.layer-weapon {
+  z-index: 40;
+  right: -10%;
+  top: 35%;
+  font-size: 0.7em;
+  transform: rotate(10deg);
+}
+
+.layer-shield {
+  z-index: 35;
+  left: -10%;
+  top: 35%;
+  font-size: 0.7em;
+  transform: rotate(-10deg);
+}
+
+.layer-armor {
+  z-index: 25;
+  top: 50%;
+  font-size: 0.5em;
+}
+
+/* Túnica centralizada */
+.layer-mount {
+  z-index: 5;
+  bottom: -5%;
+  font-size: 1.1em;
+  opacity: 1;
+  filter: brightness(0.9);
+}
+
+@keyframes habitica-idle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.habitica-animate {
+  animation: habitica-idle 2.5s ease-in-out infinite;
+}

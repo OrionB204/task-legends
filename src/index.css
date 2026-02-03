@@ -1,0 +1,416 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Pixel Art RPG Theme - Light Mode */
+    --background: 220 20% 10%;
+    --foreground: 45 100% 90%;
+
+    --card: 220 25% 15%;
+    --card-foreground: 45 100% 90%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 45 100% 90%;
+
+    --primary: 45 100% 50%;
+    --primary-foreground: 220 25% 10%;
+
+    --secondary: 280 60% 50%;
+    --secondary-foreground: 45 100% 95%;
+
+    --muted: 220 20% 20%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 160 70% 40%;
+    --accent-foreground: 45 100% 95%;
+
+    --destructive: 0 80% 50%;
+    --destructive-foreground: 45 100% 95%;
+
+    --border: 45 50% 30%;
+    --input: 220 25% 18%;
+    --ring: 45 100% 50%;
+
+    --radius: 0px;
+
+    /* RPG Custom Colors */
+    --hp: 0 75% 50%;
+    --hp-glow: 0 100% 60%;
+    --xp: 120 70% 45%;
+    --xp-glow: 120 100% 55%;
+    --mana: 210 90% 55%;
+    --mana-glow: 210 100% 65%;
+    --gold: 45 100% 50%;
+    --gold-glow: 45 100% 60%;
+    --diamond: 280 80% 65%;
+    --diamond-glow: 280 100% 75%;
+
+    /* PvP Colors */
+    --pvp-red: 0 85% 55%;
+    --pvp-blue: 210 90% 55%;
+    --arena-bg: 0 40% 12%;
+
+    /* Class Colors */
+    --warrior: 0 70% 50%;
+    --mage: 280 80% 60%;
+    --rogue: 270 40% 35%;
+    --cleric: 45 90% 60%;
+    --paladin: 35 80% 55%;
+
+    --sidebar-background: 220 25% 12%;
+    --sidebar-foreground: 45 100% 90%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 25% 10%;
+    --sidebar-accent: 220 25% 18%;
+    --sidebar-accent-foreground: 45 100% 90%;
+    --sidebar-border: 45 50% 25%;
+    --sidebar-ring: 45 100% 50%;
+  }
+
+  .dark {
+    --background: 220 20% 8%;
+    --foreground: 45 100% 90%;
+    --card: 220 25% 12%;
+    --card-foreground: 45 100% 90%;
+    --popover: 220 25% 10%;
+    --popover-foreground: 45 100% 90%;
+    --primary: 45 100% 50%;
+    --primary-foreground: 220 25% 10%;
+    --secondary: 280 60% 50%;
+    --secondary-foreground: 45 100% 95%;
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 160 70% 40%;
+    --accent-foreground: 45 100% 95%;
+    --destructive: 0 80% 50%;
+    --destructive-foreground: 45 100% 95%;
+    --border: 45 50% 25%;
+    --input: 220 25% 15%;
+    --ring: 45 100% 50%;
+    --sidebar-background: 220 25% 10%;
+    --sidebar-foreground: 45 100% 90%;
+    --sidebar-primary: 45 100% 50%;
+    --sidebar-primary-foreground: 220 25% 10%;
+    --sidebar-accent: 220 25% 15%;
+    --sidebar-accent-foreground: 45 100% 90%;
+    --sidebar-border: 45 50% 20%;
+    --sidebar-ring: 45 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-pixel;
+    image-rendering: pixelated;
+  }
+}
+
+@layer components {
+
+  /* EMERGENCY HIDE for legacy floating buttons that may persist in cache/deploy */
+  /* EMERGENCY HIDE for legacy floating buttons that may persist in cache/deploy */
+  .fixed.bottom-4.right-4,
+  .fixed.bottom-20.right-4,
+  div[class*="fixed"][class*="bottom-"][class*="right-"] button,
+  div[class*="fixed"][class*="bottom-"][class*="right-"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
+
+  .pixel-border {
+    box-shadow:
+      0 0 0 2px hsl(var(--border)),
+      0 0 0 4px hsl(var(--background)),
+      inset 0 0 0 2px hsl(var(--border));
+  }
+
+  .pixel-border-gold {
+    box-shadow:
+      0 0 0 2px hsl(var(--gold)),
+      0 0 0 4px hsl(var(--background)),
+      inset 0 0 0 2px hsl(var(--gold)),
+      0 0 15px hsl(var(--gold-glow) / 0.3);
+  }
+
+  /* RPG Dialog Box Style */
+  .pixel-dialog {
+    background: linear-gradient(180deg, hsl(var(--card)) 0%, hsl(var(--background)) 100%);
+    box-shadow:
+      0 0 0 3px hsl(var(--border)),
+      0 0 0 5px hsl(var(--background)),
+      inset 0 0 0 3px hsl(var(--border)),
+      0 4px 20px hsl(var(--background) / 0.5);
+    border-radius: 0;
+  }
+
+  .pixel-inset {
+    box-shadow:
+      inset 2px 2px 0 hsl(var(--background) / 0.5),
+      inset -2px -2px 0 hsl(var(--foreground) / 0.1);
+  }
+
+  .pixel-button {
+    box-shadow:
+      4px 4px 0 hsl(var(--background)),
+      0 0 0 2px hsl(var(--border));
+    transition: all 0.1s;
+  }
+
+  .pixel-button:hover {
+    box-shadow:
+      2px 2px 0 hsl(var(--background)),
+      0 0 0 2px hsl(var(--border));
+    transform: translate(2px, 2px);
+  }
+
+  .pixel-button:active {
+    box-shadow:
+      0 0 0 2px hsl(var(--border));
+    transform: translate(4px, 4px);
+  }
+
+  .glow-hp {
+    box-shadow: 0 0 10px hsl(var(--hp-glow) / 0.5), inset 0 0 5px hsl(var(--hp-glow) / 0.3);
+  }
+
+  .glow-xp {
+    box-shadow: 0 0 10px hsl(var(--xp-glow) / 0.5), inset 0 0 5px hsl(var(--xp-glow) / 0.3);
+  }
+
+  .glow-mana {
+    box-shadow: 0 0 10px hsl(var(--mana-glow) / 0.5), inset 0 0 5px hsl(var(--mana-glow) / 0.3);
+  }
+
+  .glow-gold {
+    text-shadow: 0 0 10px hsl(var(--gold-glow));
+  }
+
+  .glow-diamond {
+    text-shadow: 0 0 10px hsl(var(--diamond-glow));
+  }
+
+  /* RPG Speech Bubble */
+  .speech-bubble {
+    position: relative;
+    background: hsl(var(--card));
+    border: 3px solid hsl(var(--border));
+  }
+
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: transparent hsl(var(--border)) transparent transparent;
+  }
+
+  /* Pixelated Icons */
+  .pixel-icon {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}
+
+@layer utilities {
+  .font-pixel {
+    font-family: 'Press Start 2P', cursive;
+  }
+
+  .text-shadow-pixel {
+    text-shadow: 2px 2px 0 hsl(var(--background));
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-bounce-pixel {
+    animation: bounce-pixel 0.5s ease-in-out;
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+
+  50% {
+    opacity: 0.8;
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes bounce-pixel {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Habit Feedback Animations */
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-4px);
+  }
+
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes glow-pulse {
+  0% {
+    box-shadow: 0 0 0 0 hsl(var(--accent) / 0.7);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 10px hsl(var(--accent) / 0.4);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--accent) / 0);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 0.5s ease-out;
+}
+
+@keyframes level-up {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+    filter: brightness(1.5);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.animate-level-up {
+  animation: level-up 0.6s ease-out;
+}
+
+/* PvP Arena Styles */
+.arena-split {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+}
+
+.arena-side-left {
+  border-right: 3px solid hsl(var(--border));
+}
+
+.arena-side-right {
+  border-left: 3px solid hsl(var(--border));
+}
+
+.pvp-hp-bar {
+  height: 16px;
+  border: 3px solid hsl(var(--border));
+  background: hsl(var(--muted));
+  overflow: hidden;
+}
+
+.pvp-hp-fill {
+  height: 100%;
+  transition: width 0.5s ease-out;
+  background: linear-gradient(180deg, hsl(var(--hp)) 0%, hsl(var(--hp) / 0.7) 100%);
+}
+
+.pvp-damage-flash {
+  animation: damage-flash 0.3s ease-out;
+}
+
+@keyframes damage-flash {
+
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(2) saturate(2);
+  }
+}
+
+.evidence-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+}
+
+.evidence-thumbnail {
+  aspect-ratio: 1;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s;
+  image-rendering: pixelated;
+}
+
+.evidence-thumbnail:hover {
+  transform: scale(1.1);
+  z-index: 10;
+}

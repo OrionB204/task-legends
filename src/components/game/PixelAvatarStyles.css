@@ -1,0 +1,363 @@
+/**
+ * PixelAvatar Styles - Sistema de Estilo Habitica
+ * 
+ * Estilos para o sistema de avatar em camadas com estética
+ * pixel art 8-bit/16-bit idêntica ao Habitica
+ */
+
+/* Container principal do avatar */
+.pixel-avatar-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+  /* Mudei para hidden para o cenário não vazar */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Frame decorativo V2 - Estilo Minimalista para Cenários */
+.avatar-frame-v2 {
+  position: absolute;
+  inset: 0;
+  border: 4px solid #ffb700;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #362863 0%, #1a1035 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.avatar-frame-v2.is-aligned {
+  background: transparent !important;
+  /* Remove o fundo quando há cenário */
+  border-width: 2px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.4);
+}
+
+.has-background-equipped {
+  background-color: #000 !important;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.has-background-equipped .layer-body img {
+  mix-blend-mode: multiply !important;
+  filter: contrast(125%) brightness(110%) !important;
+}
+
+/* Frame decorativo estilo RPG */
+.avatar-frame {
+  position: absolute;
+  inset: -4px;
+  border: 4px solid #ffb700;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #362863 0%, #1a1035 100%);
+  box-shadow:
+    0 0 15px rgba(0, 0, 0, 0.6),
+    inset 0 0 20px rgba(255, 183, 0, 0.1);
+  z-index: 2;
+  /* Acima do cenário (1) */
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.avatar-frame.has-background {
+  background: none !important;
+  /* REMOVE O FUNDO ROXO COMPLETAMENTE */
+  border-color: rgba(255, 183, 0, 0.8);
+  box-shadow: none;
+}
+
+/* Camada genérica de equipamento */
+.pixel-layer {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Ícone de camada (emoji fallback) */
+.layer-icon {
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+  line-height: 1;
+}
+
+/* Imagem de sprite */
+.sprite-image {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ============================================
+   CAMADAS ESPECÍFICAS - Posicionamento Habitica
+   ============================================ */
+
+/* Cenário de fundo */
+.layer-background {
+  position: absolute;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1 !important;
+  filter: none !important;
+  overflow: hidden;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background-image-fill {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  image-rendering: auto !important;
+  /* Cenários detalhados ficam melhor sem pixelated se forem grandes */
+}
+
+/* Corpo base do personagem */
+.layer-body {
+  width: 140% !important;
+  height: 140% !important;
+  z-index: 10;
+}
+
+.body-sprite {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: contrast(110%) brightness(105%);
+  position: relative;
+  bottom: -10%;
+}
+
+.blend-multiply {
+  mix-blend-mode: multiply;
+  filter: contrast(120%) brightness(110%);
+}
+
+/* Montaria - atrás do personagem */
+.layer-mount {
+  z-index: 5;
+  bottom: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.3em !important;
+  opacity: 0.95;
+  filter: brightness(0.9) drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.8));
+}
+
+/* Skin overlay */
+.layer-skin {
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+}
+
+/* Pernas */
+.layer-legs {
+  z-index: 25;
+  bottom: 5%;
+  font-size: 0.45em !important;
+}
+
+/* Armadura/Peito */
+.layer-chest {
+  z-index: 30;
+  top: 45%;
+  font-size: 0.55em !important;
+}
+
+/* Escudo (mão esquerda) */
+.layer-shield {
+  z-index: 35;
+  left: -15%;
+  top: 35%;
+  font-size: 0.6em !important;
+  transform: rotate(-10deg) !important;
+}
+
+/* Cabeça/Elmo */
+.layer-head {
+  z-index: 40;
+  top: -10%;
+  font-size: 0.55em !important;
+}
+
+/* Arma (mão direita) */
+.layer-weapon {
+  z-index: 45;
+  right: -18%;
+  top: 30%;
+  font-size: 0.65em !important;
+  transform: rotate(15deg) !important;
+}
+
+/* Acessório */
+.layer-accessory {
+  z-index: 50;
+  bottom: 15%;
+  right: 10%;
+  font-size: 0.35em !important;
+  opacity: 0.9;
+}
+
+/* ============================================
+   ANIMAÇÕES
+   ============================================ */
+
+/* Animação idle respirando */
+@keyframes avatar-idle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.avatar-animated {
+  animation: avatar-idle 2.5s ease-in-out infinite;
+}
+
+/* Animação das camadas flutuando levemente */
+@keyframes layer-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.layer-animated {
+  animation: layer-float 3s ease-in-out infinite;
+}
+
+/* ============================================
+   EFEITOS DE RARIDADE
+   ============================================ */
+
+/* Glow lendário */
+.legendary-glow {
+  filter: drop-shadow(0 0 10px rgba(234, 179, 8, 0.6));
+}
+
+@keyframes legendary-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(234, 179, 8, 0.8);
+  }
+}
+
+.legendary-glow .avatar-frame {
+  animation: legendary-pulse 2s ease-in-out infinite;
+  border-color: #fbbf24;
+}
+
+/* Partículas para itens lendários */
+.legendary-particles {
+  position: absolute;
+  inset: -20px;
+  pointer-events: none;
+  z-index: 100;
+  background: radial-gradient(circle at 20% 20%, rgba(234, 179, 8, 0.3) 0%, transparent 40%),
+    radial-gradient(circle at 80% 40%, rgba(234, 179, 8, 0.2) 0%, transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(234, 179, 8, 0.3) 0%, transparent 40%);
+  animation: particles-float 4s ease-in-out infinite;
+}
+
+@keyframes particles-float {
+
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
+/* ============================================
+   SOMBRA DO PERSONAGEM
+   ============================================ */
+
+.avatar-shadow {
+  position: absolute;
+  bottom: -8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 10%;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  filter: blur(3px);
+  z-index: 1;
+}
+
+/* ============================================
+   PIXEL ART RENDERING
+   ============================================ */
+
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/* ============================================
+   RESPONSIVIDADE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .layer-weapon {
+    right: -12%;
+    font-size: 0.55em !important;
+  }
+
+  .layer-shield {
+    left: -10%;
+    font-size: 0.5em !important;
+  }
+
+  .layer-mount {
+    font-size: 1em !important;
+  }
+}
+
+/* ============================================
+   EFEITOS DE HOVER (para inventário)
+   ============================================ */
+
+.pixel-avatar-container:hover .layer-weapon {
+  transform: rotate(25deg) scale(1.1) !important;
+}
+
+.pixel-avatar-container:hover .layer-shield {
+  transform: rotate(-15deg) scale(1.1) !important;
+}
+
+.pixel-avatar-container:hover {
+  filter: brightness(1.1);
+}

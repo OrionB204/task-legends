@@ -1,0 +1,223 @@
+import { Item } from '@/types/game';
+
+export const RARITY_COLORS: Record<string, string> = {
+    common: 'text-muted-foreground border-muted-foreground',
+    uncommon: 'text-success border-success',
+    rare: 'text-[hsl(var(--mana-bar))] border-[hsl(var(--mana-bar))]',
+    epic: 'text-purple-400 border-purple-500',
+    legendary: 'text-primary border-primary'
+};
+
+export const RARITY_LABELS: Record<string, string> = {
+    common: 'Comum',
+    uncommon: 'Incomum',
+    rare: 'Raro',
+    epic: 'Épico',
+    legendary: 'Lendário'
+};
+
+export const SHOP_ITEMS: Item[] = [
+    // === ARMAS - ESPADAS ===
+    { id: 'sword-wood', name: 'Espada de Madeira', description: 'Uma espada de treino para iniciantes.', type: 'weapon', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'strength', value: 1 }], icon: '🗡️' },
+    { id: 'sword-iron', name: 'Espada de Ferro', description: 'Uma espada básica mas confiável.', type: 'weapon', rarity: 'common', price: 1200, priceType: 'gold', effects: [{ attribute: 'strength', value: 2 }], icon: '⚔️' },
+    { id: 'sword-bronze', name: 'Espada de Bronze', description: 'Forjada com bronze resistente.', type: 'weapon', rarity: 'common', price: 1400, priceType: 'gold', effects: [{ attribute: 'strength', value: 2 }, { attribute: 'agility', value: 1 }], icon: '⚔️' },
+    { id: 'sword-steel', name: 'Espada de Aço', description: 'Aço temperado de qualidade.', type: 'weapon', rarity: 'uncommon', price: 1800, priceType: 'gold', effects: [{ attribute: 'strength', value: 3 }], icon: '⚔️' },
+    { id: 'sword-knight', name: 'Espada de Cavaleiro', description: 'Usada pelos cavaleiros reais.', type: 'weapon', rarity: 'uncommon', price: 2200, priceType: 'gold', effects: [{ attribute: 'strength', value: 3 }, { attribute: 'vitality', value: 1 }], icon: '⚔️' },
+    { id: 'sword-silver', name: 'Espada de Prata', description: 'Eficaz contra criaturas das trevas.', type: 'weapon', rarity: 'uncommon', price: 2500, priceType: 'gold', effects: [{ attribute: 'strength', value: 4 }], icon: '⚔️' },
+    { id: 'sword-gladius', name: 'Gladius Romana', description: 'A arma clássica dos gladiadores.', type: 'weapon', rarity: 'uncommon', price: 10, priceType: 'gems', effects: [{ attribute: 'strength', value: 3 }, { attribute: 'agility', value: 2 }], icon: '⚔️' },
+    { id: 'sword-samurai', name: 'Katana do Samurai', description: 'Lâmina oriental afiada como navalha.', type: 'weapon', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'agility', value: 2 }], icon: '🗡️' },
+    { id: 'sword-royal', name: 'Espada Real', description: 'Pertencia à família real.', type: 'weapon', rarity: 'rare', price: 3500, priceType: 'gold', effects: [{ attribute: 'strength', value: 5 }], icon: '⚔️' },
+    { id: 'sword-flame', name: 'Espada Flamejante', description: 'Queima com fogo eterno.', type: 'weapon', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'damage', value: 5 }], icon: '🔥' },
+    { id: 'sword-ice', name: 'Espada Glacial', description: 'Congela o ar ao redor.', type: 'weapon', rarity: 'rare', price: 3800, priceType: 'gold', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'intelligence', value: 2 }], icon: '❄️' },
+    { id: 'sword-thunder', name: 'Espada Trovão', description: 'Carregada com energia elétrica.', type: 'weapon', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'agility', value: 2 }], icon: '⚡' },
+    { id: 'sword-shadow', name: 'Espada das Sombras', description: 'Forjada na escuridão eterna.', type: 'weapon', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'agility', value: 3 }], icon: '🌑' },
+    { id: 'sword-holy', name: 'Espada Sagrada', description: 'Abençoada pelos deuses.', type: 'weapon', rarity: 'epic', price: 4500, priceType: 'gold', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'vitality', value: 3 }], icon: '✨' },
+    { id: 'sword-demon', name: 'Espada Demoníaca', description: 'Carrega a maldição de demônios.', type: 'weapon', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 6 }, { attribute: 'damage', value: 8 }], icon: '👿' },
+    { id: 'sword-titan', name: 'Espada do Titã', description: 'Requer força sobre-humana.', type: 'weapon', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 7 }, { attribute: 'endurance', value: 2 }], icon: '⚔️' },
+    { id: 'sword-dragon', name: 'Espada do Dragão', description: 'Forjada com fogo de dragão ancestral.', type: 'weapon', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 8 }, { attribute: 'damage', value: 12 }], icon: '🐉' },
+    { id: 'sword-excalibur', name: 'Excalibur', description: 'A lendária espada dos reis.', type: 'weapon', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'strength', value: 10 }, { attribute: 'vitality', value: 5 }], icon: '👑' },
+    { id: 'sword-cosmic', name: 'Lâmina Cósmica', description: 'Forjada com energia das estrelas.', type: 'weapon', rarity: 'legendary', price: 18, priceType: 'gems', effects: [{ attribute: 'strength', value: 8 }, { attribute: 'intelligence', value: 5 }, { attribute: 'damage', value: 10 }], icon: '🌌' },
+    { id: 'sword-apocalypse', name: 'Espada do Apocalipse', description: 'Anuncia o fim dos tempos.', type: 'weapon', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'strength', value: 12 }, { attribute: 'damage', value: 15 }], icon: '💀' },
+
+    // === ARMAS - CAJADOS/VARAS ===
+    { id: 'staff-apprentice', name: 'Cajado do Aprendiz', description: 'Canaliza energia mágica básica.', type: 'weapon', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 2 }], icon: '🪄' },
+    { id: 'staff-oak', name: 'Cajado de Carvalho', description: 'Feito de madeira ancestral.', type: 'weapon', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 2 }, { attribute: 'endurance', value: 1 }], icon: '🪵' },
+    { id: 'staff-crystal', name: 'Cajado de Cristal', description: 'Amplifica poderes mágicos.', type: 'weapon', rarity: 'uncommon', price: 1800, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 3 }], icon: '💎' },
+    { id: 'staff-fire', name: 'Cajado de Fogo', description: 'Canaliza magia de fogo.', type: 'weapon', rarity: 'uncommon', price: 12, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 3 }, { attribute: 'damage', value: 3 }], icon: '🔥' },
+    { id: 'staff-ice', name: 'Cajado de Gelo', description: 'Congela os inimigos.', type: 'weapon', rarity: 'uncommon', price: 2200, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 4 }], icon: '❄️' },
+    { id: 'staff-nature', name: 'Cajado da Natureza', description: 'Conecta com as forças da terra.', type: 'weapon', rarity: 'uncommon', price: 12, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 3 }, { attribute: 'vitality', value: 2 }], icon: '🌿' },
+    { id: 'staff-thunder', name: 'Cajado do Trovão', description: 'Invoca tempestades.', type: 'weapon', rarity: 'rare', price: 3000, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 4 }, { attribute: 'agility', value: 2 }], icon: '⚡' },
+    { id: 'staff-arcane', name: 'Cajado Arcano', description: 'Poder mágico concentrado.', type: 'weapon', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 5 }, { attribute: 'mana', value: 20 }], icon: '🔮' },
+    { id: 'staff-necro', name: 'Cajado Necromante', description: 'Controla os mortos.', type: 'weapon', rarity: 'rare', price: 3800, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 5 }, { attribute: 'damage', value: 5 }], icon: '💀' },
+    { id: 'staff-void', name: 'Cajado do Vazio', description: 'Canaliza energia do vazio.', type: 'weapon', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 6 }, { attribute: 'mana', value: 30 }], icon: '🌑' },
+    { id: 'staff-holy', name: 'Cajado Sagrado', description: 'Abençoado pelos deuses.', type: 'weapon', rarity: 'epic', price: 4500, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 6 }, { attribute: 'vitality', value: 3 }], icon: '✨' },
+    { id: 'staff-elder', name: 'Cajado Ancestral', description: 'Passado de geração em geração.', type: 'weapon', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 7 }, { attribute: 'endurance', value: 3 }], icon: '🪄' },
+    { id: 'staff-cosmos', name: 'Cajado Cósmico', description: 'Poder das estrelas concentrado.', type: 'weapon', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 9 }, { attribute: 'mana', value: 50 }], icon: '🌌' },
+    { id: 'staff-god', name: 'Cajado dos Deuses', description: 'Poder divino em suas mãos.', type: 'weapon', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 12 }, { attribute: 'damage', value: 12 }], icon: '⚜️' },
+
+    // === ARMAS - ARCOS ===
+    { id: 'bow-short', name: 'Arco Curto', description: 'Rápido mas de curto alcance.', type: 'weapon', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'agility', value: 2 }], icon: '🏹' },
+    { id: 'bow-hunter', name: 'Arco do Caçador', description: 'Leve e preciso.', type: 'weapon', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'agility', value: 2 }, { attribute: 'strength', value: 1 }], icon: '🏹' },
+    { id: 'bow-long', name: 'Arco Longo', description: 'Grande alcance e poder.', type: 'weapon', rarity: 'uncommon', price: 1900, priceType: 'gold', effects: [{ attribute: 'agility', value: 3 }], icon: '🏹' },
+    { id: 'bow-composite', name: 'Arco Composto', description: 'Feito de materiais diversos.', type: 'weapon', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'agility', value: 3 }, { attribute: 'strength', value: 2 }], icon: '🏹' },
+    { id: 'bow-elven', name: 'Arco Élfico', description: 'Artesanato élfico perfeito.', type: 'weapon', rarity: 'uncommon', price: 2700, priceType: 'gold', effects: [{ attribute: 'agility', value: 4 }], icon: '🧝' },
+    { id: 'bow-war', name: 'Arco de Guerra', description: 'Usado em grandes batalhas.', type: 'weapon', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'agility', value: 4 }, { attribute: 'damage', value: 4 }], icon: '🏹' },
+    { id: 'bow-shadow', name: 'Arco das Sombras', description: 'Dispara flechas silenciosas.', type: 'weapon', rarity: 'rare', price: 3500, priceType: 'gold', effects: [{ attribute: 'agility', value: 5 }, { attribute: 'damage', value: 3 }], icon: '🌑' },
+    { id: 'bow-phoenix', name: 'Arco da Fênix', description: 'Flechas de fogo purificador.', type: 'weapon', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'agility', value: 5 }, { attribute: 'damage', value: 5 }], icon: '🔥' },
+    { id: 'bow-wind', name: 'Arco do Vento', description: 'Flechas guiadas pelo vento.', type: 'weapon', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'agility', value: 6 }, { attribute: 'damage', value: 5 }], icon: '💨' },
+    { id: 'bow-assassin', name: 'Arco do Assassino', description: 'Perfeito para ataques furtivos.', type: 'weapon', rarity: 'epic', price: 4600, priceType: 'gold', effects: [{ attribute: 'agility', value: 7 }, { attribute: 'damage', value: 6 }], icon: '🗡️' },
+    { id: 'bow-titan', name: 'Arco do Titã', description: 'Força titânica em cada disparo.', type: 'weapon', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'agility', value: 6 }, { attribute: 'strength', value: 4 }], icon: '🏹' },
+    { id: 'bow-artemis', name: 'Arco de Ártemis', description: 'O arco da deusa da caça.', type: 'weapon', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'agility', value: 10 }, { attribute: 'damage', value: 10 }], icon: '🌙' },
+    { id: 'bow-celestial', name: 'Arco Celestial', description: 'Dispara estrelas cadentes.', type: 'weapon', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'agility', value: 12 }, { attribute: 'damage', value: 12 }], icon: '⭐' },
+
+    // === ARMAS - MAÇAS/MARTELOS ===
+    { id: 'mace-iron', name: 'Maça de Ferro', description: 'Pesada e devastadora.', type: 'weapon', rarity: 'common', price: 1100, priceType: 'gold', effects: [{ attribute: 'strength', value: 2 }], icon: '🔨' },
+    { id: 'mace-war', name: 'Maça de Guerra', description: 'Usada em combates intensos.', type: 'weapon', rarity: 'uncommon', price: 10, priceType: 'gems', effects: [{ attribute: 'strength', value: 3 }, { attribute: 'vitality', value: 1 }], icon: '🔨' },
+    { id: 'mace-holy', name: 'Maça Sagrada', description: 'Abençoada pelos deuses.', type: 'weapon', rarity: 'uncommon', price: 2400, priceType: 'gold', effects: [{ attribute: 'strength', value: 3 }, { attribute: 'vitality', value: 2 }], icon: '✨' },
+    { id: 'hammer-blacksmith', name: 'Martelo do Ferreiro', description: 'Forjado com perícia.', type: 'weapon', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }], icon: '🔨' },
+    { id: 'hammer-thunder', name: 'Martelo do Trovão', description: 'Causa tremores ao impactar.', type: 'weapon', rarity: 'rare', price: 3200, priceType: 'gold', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'damage', value: 4 }], icon: '⚡' },
+    { id: 'mace-skull', name: 'Maça Caveira', description: 'Decorada com crânios.', type: 'weapon', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'damage', value: 5 }], icon: '💀' },
+    { id: 'hammer-war', name: 'Martelo de Guerra', description: 'Destruição garantida.', type: 'weapon', rarity: 'epic', price: 4200, priceType: 'gold', effects: [{ attribute: 'strength', value: 6 }, { attribute: 'damage', value: 6 }], icon: '🔨' },
+    { id: 'hammer-giant', name: 'Martelo do Gigante', description: 'Tamanho descomunal.', type: 'weapon', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 8 }, { attribute: 'endurance', value: 2 }], icon: '🔨' },
+    { id: 'hammer-mjolnir', name: 'Mjölnir', description: 'O martelo dos deuses.', type: 'weapon', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'strength', value: 12 }, { attribute: 'damage', value: 15 }], icon: '⚡' },
+
+    // === ARMADURAS - CORPO ===
+    { id: 'armor-tunic', name: 'Túnica de Pano', description: 'Uma simples túnica de pano para iniciantes.', type: 'armor', rarity: 'common', price: 500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 1 }], icon: '👗' },
+    { id: 'armor-cloth', name: 'Vestes de Tecido', description: 'Proteção mínima mas confortável.', type: 'armor', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'vitality', value: 1 }], icon: '👕' },
+    { id: 'armor-leather', name: 'Armadura de Couro', description: 'Proteção básica sem perder mobilidade.', type: 'armor', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 2 }], icon: '🥋' },
+    { id: 'armor-studded', name: 'Couro Reforçado', description: 'Couro com tachas de metal.', type: 'armor', rarity: 'common', price: 1500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'endurance', value: 1 }], icon: '🥋' },
+    { id: 'armor-chain', name: 'Cota de Malha', description: 'Boa proteção contra cortes.', type: 'armor', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }], icon: '🛡️' },
+    { id: 'armor-scale', name: 'Armadura de Escamas', description: 'Escamas metálicas sobrepostas.', type: 'armor', rarity: 'uncommon', price: 2300, priceType: 'gold', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'endurance', value: 1 }], icon: '🐍' },
+    { id: 'armor-brigandine', name: 'Brigandina', description: 'Placas de metal escondidas.', type: 'armor', rarity: 'uncommon', price: 12, priceType: 'gems', effects: [{ attribute: 'vitality', value: 4 }], icon: '🛡️' },
+    { id: 'armor-plate', name: 'Armadura de Placas', description: 'Proteção pesada para guerreiros.', type: 'armor', rarity: 'uncommon', price: 2900, priceType: 'gold', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'endurance', value: 2 }], icon: '⚔️' },
+    { id: 'armor-knight', name: 'Armadura de Cavaleiro', description: 'Proteção completa do corpo.', type: 'armor', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'strength', value: 1 }], icon: '🏇' },
+    { id: 'armor-mage', name: 'Manto do Mago', description: 'Tecido encantado.', type: 'armor', rarity: 'rare', price: 3000, priceType: 'gold', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'intelligence', value: 3 }], icon: '🧙' },
+    { id: 'armor-assassin', name: 'Vestes do Assassino', description: 'Leve e silenciosa.', type: 'armor', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'agility', value: 3 }], icon: '🗡️' },
+    { id: 'armor-paladin', name: 'Armadura de Paladino', description: 'Proteção sagrada.', type: 'armor', rarity: 'rare', price: 3500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'endurance', value: 2 }], icon: '✨' },
+    { id: 'armor-royal', name: 'Armadura Real', description: 'Usada pela realeza.', type: 'armor', rarity: 'rare', price: 14, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'strength', value: 2 }], icon: '👑' },
+    { id: 'armor-shadow', name: 'Armadura das Sombras', description: 'Se mistura com a escuridão.', type: 'armor', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'agility', value: 3 }], icon: '🌑' },
+    { id: 'armor-elemental', name: 'Armadura Elemental', description: 'Protege contra elementos.', type: 'armor', rarity: 'epic', price: 4400, priceType: 'gold', effects: [{ attribute: 'vitality', value: 6 }, { attribute: 'endurance', value: 3 }], icon: '🔮' },
+    { id: 'armor-battle', name: 'Armadura de Batalha', description: 'Forjada para a guerra.', type: 'armor', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 6 }, { attribute: 'strength', value: 3 }], icon: '⚔️' },
+    { id: 'armor-titan', name: 'Armadura do Titã', description: 'Resistência titânica.', type: 'armor', rarity: 'epic', price: 5000, priceType: 'gold', effects: [{ attribute: 'vitality', value: 7 }, { attribute: 'endurance', value: 4 }], icon: '🗿' },
+    { id: 'armor-dragon', name: 'Armadura Dracônica', description: 'Escamas de dragão impenetráveis.', type: 'armor', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 10 }, { attribute: 'endurance', value: 5 }], icon: '🐉' },
+    { id: 'armor-god', name: 'Armadura Divina', description: 'Proteção dos deuses.', type: 'armor', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'vitality', value: 12 }, { attribute: 'endurance', value: 6 }], icon: '⚜️' },
+    { id: 'armor-celestial', name: 'Armadura Celestial', description: 'Forjada nas estrelas.', type: 'armor', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'vitality', value: 10 }, { attribute: 'strength', value: 5 }, { attribute: 'agility', value: 5 }], icon: '🌟' },
+
+    // === PERNAS (CALÇAS/BOTAS) ===
+    { id: 'legs-cloth', name: 'Calças de Tecido', description: 'Calças simples de pano.', type: 'legs', rarity: 'common', price: 500, priceType: 'gold', effects: [{ attribute: 'agility', value: 1 }], icon: '👖' },
+    { id: 'legs-leather', name: 'Calças de Couro', description: 'Couro resistente para aventuras.', type: 'legs', rarity: 'common', price: 800, priceType: 'gold', effects: [{ attribute: 'agility', value: 1 }, { attribute: 'endurance', value: 1 }], icon: '👖' },
+    { id: 'legs-chain', name: 'Grevas de Malha', description: 'Proteção leve para as pernas.', type: 'legs', rarity: 'uncommon', price: 1500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'agility', value: 1 }], icon: '🦵' },
+    { id: 'legs-plate', name: 'Grevas de Placas', description: 'Pesadas mas muito protetoras.', type: 'legs', rarity: 'uncommon', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'endurance', value: 1 }], icon: '🦿' },
+    { id: 'legs-knight', name: 'Grevas de Cavaleiro', description: 'Usadas por cavaleiros nobres.', type: 'legs', rarity: 'rare', price: 2500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'strength', value: 2 }], icon: '🛡️' },
+    { id: 'legs-assassin', name: 'Calças do Assassino', description: 'Silenciosas e flexíveis.', type: 'legs', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'agility', value: 4 }, { attribute: 'damage', value: 2 }], icon: '🗡️' },
+    { id: 'legs-mage', name: 'Calças do Mago', description: 'Tecido encantado com runas.', type: 'legs', rarity: 'rare', price: 2800, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 3 }, { attribute: 'mana', value: 15 }], icon: '✨' },
+    { id: 'legs-titan', name: 'Grevas do Titã', description: 'Força titânica nas pernas.', type: 'legs', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'strength', value: 3 }], icon: '🗿' },
+    { id: 'legs-shadow', name: 'Calças das Sombras', description: 'Quase invisíveis na escuridão.', type: 'legs', rarity: 'epic', price: 4000, priceType: 'gold', effects: [{ attribute: 'agility', value: 5 }, { attribute: 'damage', value: 4 }], icon: '🌑' },
+    { id: 'legs-dragon', name: 'Grevas Dracônicas', description: 'Escamas de dragão nas pernas.', type: 'legs', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 7 }, { attribute: 'agility', value: 5 }], icon: '🐉' },
+    { id: 'legs-celestial', name: 'Grevas Celestiais', description: 'Velocidade das estrelas.', type: 'legs', rarity: 'legendary', price: 18, priceType: 'gems', effects: [{ attribute: 'agility', value: 8 }, { attribute: 'vitality', value: 5 }, { attribute: 'damage', value: 5 }], icon: '🌟' },
+
+    // === ELMOS ===
+    { id: 'helmet-cloth', name: 'Capuz de Tecido', description: 'Proteção mínima.', type: 'helmet', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'vitality', value: 1 }], icon: '🧢' },
+    { id: 'helmet-leather', name: 'Capuz de Couro', description: 'Leve e flexível.', type: 'helmet', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 1 }, { attribute: 'agility', value: 1 }], icon: '🎭' },
+    { id: 'helmet-iron', name: 'Elmo de Ferro', description: 'Proteção básica para a cabeça.', type: 'helmet', rarity: 'common', price: 1400, priceType: 'gold', effects: [{ attribute: 'vitality', value: 2 }], icon: '⛑️' },
+    { id: 'helmet-chain', name: 'Coifa de Malha', description: 'Anéis de metal entrelaçados.', type: 'helmet', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'endurance', value: 1 }], icon: '⛓️' },
+    { id: 'helmet-knight', name: 'Elmo de Cavaleiro', description: 'Usado por cavaleiros nobres.', type: 'helmet', rarity: 'uncommon', price: 2200, priceType: 'gold', effects: [{ attribute: 'vitality', value: 3 }], icon: '🪖' },
+    { id: 'helmet-viking', name: 'Elmo Viking', description: 'Estilo nórdico imponente.', type: 'helmet', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'strength', value: 2 }], icon: '🛡️' },
+    { id: 'helmet-wizard', name: 'Chapéu de Mago', description: 'Amplifica poderes mágicos.', type: 'helmet', rarity: 'uncommon', price: 2300, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 3 }], icon: '🧙' },
+    { id: 'helmet-samurai', name: 'Kabuto Samurai', description: 'Elmo tradicional japonês.', type: 'helmet', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'strength', value: 2 }], icon: '⚔️' },
+    { id: 'helmet-royal', name: 'Coroa Real', description: 'Símbolo de poder.', type: 'helmet', rarity: 'rare', price: 3400, priceType: 'gold', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'intelligence', value: 2 }], icon: '👑' },
+    { id: 'helmet-shadow', name: 'Capuz das Sombras', description: 'Esconde na escuridão.', type: 'helmet', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'agility', value: 4 }], icon: '🌑' },
+    { id: 'helmet-paladin', name: 'Elmo de Paladino', description: 'Proteção sagrada.', type: 'helmet', rarity: 'rare', price: 3600, priceType: 'gold', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'endurance', value: 2 }], icon: '✨' },
+    { id: 'helmet-battle', name: 'Elmo de Batalha', description: 'Forjado para a guerra.', type: 'helmet', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'strength', value: 2 }], icon: '⚔️' },
+    { id: 'helmet-titan', name: 'Elmo do Titã', description: 'Tamanho e proteção titânica.', type: 'helmet', rarity: 'epic', price: 4500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'endurance', value: 3 }], icon: '🗿' },
+    { id: 'helmet-demon', name: 'Elmo Demoníaco', description: 'Carrega maldição.', type: 'helmet', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'damage', value: 5 }], icon: '👿' },
+    { id: 'helmet-dragon', name: 'Elmo Dracônico', description: 'Feito de chifres de dragão.', type: 'helmet', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 7 }, { attribute: 'strength', value: 4 }], icon: '🐉' },
+    { id: 'helmet-god', name: 'Coroa Divina', description: 'Poder dos deuses.', type: 'helmet', rarity: 'legendary', price: 18, priceType: 'gems', effects: [{ attribute: 'vitality', value: 8 }, { attribute: 'intelligence', value: 5 }], icon: '⚜️' },
+    { id: 'helmet-celestial', name: 'Diadema Celestial', description: 'Brilha como as estrelas.', type: 'helmet', rarity: 'legendary', price: 18, priceType: 'gems', effects: [{ attribute: 'vitality', value: 6 }, { attribute: 'intelligence', value: 6 }, { attribute: 'agility', value: 3 }], icon: '🌟' },
+
+    // === ACESSÓRIOS - ANÉIS ===
+    { id: 'ring-copper', name: 'Anel de Cobre', description: 'Um simples anel de cobre.', type: 'accessory', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'endurance', value: 1 }], icon: '💍' },
+    { id: 'ring-iron', name: 'Anel de Ferro', description: 'Resistente e durável.', type: 'accessory', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 1 }, { attribute: 'endurance', value: 1 }], icon: '💍' },
+    { id: 'ring-silver', name: 'Anel de Prata', description: 'Prata polida.', type: 'accessory', rarity: 'uncommon', price: 1600, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 2 }], icon: '💍' },
+    { id: 'ring-strength', name: 'Anel de Força', description: 'Aumenta a força física.', type: 'accessory', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'strength', value: 3 }], icon: '💪' },
+    { id: 'ring-agility', name: 'Anel de Agilidade', description: 'Movimentos mais rápidos.', type: 'accessory', rarity: 'uncommon', price: 1800, priceType: 'gold', effects: [{ attribute: 'agility', value: 3 }], icon: '🌀' },
+    { id: 'ring-endurance', name: 'Anel de Resistência', description: 'Aumenta sua resistência física.', type: 'accessory', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'endurance', value: 3 }], icon: '💍' },
+    { id: 'ring-gold', name: 'Anel de Ouro', description: 'Ouro maciço.', type: 'accessory', rarity: 'rare', price: 2500, priceType: 'gold', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'goldBonus', value: 5 }], icon: '💍' },
+    { id: 'ring-ruby', name: 'Anel de Rubi', description: 'Pedra de fogo.', type: 'accessory', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'damage', value: 3 }], icon: '❤️' },
+    { id: 'ring-sapphire', name: 'Anel de Safira', description: 'Pedra do oceano.', type: 'accessory', rarity: 'rare', price: 3000, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 4 }, { attribute: 'mana', value: 15 }], icon: '💙' },
+    { id: 'ring-emerald', name: 'Anel de Esmeralda', description: 'Pedra da natureza.', type: 'accessory', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'hp', value: 15 }], icon: '💚' },
+    { id: 'ring-shadow', name: 'Anel das Sombras', description: 'Poder oculto.', type: 'accessory', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'agility', value: 5 }, { attribute: 'damage', value: 4 }], icon: '🌑' },
+    { id: 'ring-phoenix', name: 'Anel da Fênix', description: 'Renascimento eterno.', type: 'accessory', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'hp', value: 25 }], icon: '🔥' },
+    { id: 'ring-diamond', name: 'Anel de Diamante', description: 'Brilho eterno.', type: 'accessory', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'agility', value: 5 }], icon: '💎' },
+    { id: 'ring-god', name: 'Anel Divino', description: 'Poder dos deuses.', type: 'accessory', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'intelligence', value: 4 }, { attribute: 'agility', value: 4 }, { attribute: 'vitality', value: 4 }, { attribute: 'endurance', value: 4 }], icon: '⚜️' },
+
+    // === ACESSÓRIOS - AMULETOS ===
+    { id: 'amulet-wood', name: 'Amuleto de Madeira', description: 'Talismã simples.', type: 'accessory', rarity: 'common', price: 1000, priceType: 'gold', effects: [{ attribute: 'endurance', value: 1 }], icon: '📿' },
+    { id: 'amulet-bone', name: 'Amuleto de Osso', description: 'Ossos de criaturas.', type: 'accessory', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 2 }], icon: '🦴' },
+    { id: 'amulet-silver', name: 'Amuleto de Prata', description: 'Prata protetora.', type: 'accessory', rarity: 'uncommon', price: 1700, priceType: 'gold', effects: [{ attribute: 'vitality', value: 2 }, { attribute: 'intelligence', value: 1 }], icon: '📿' },
+    { id: 'amulet-health', name: 'Amuleto de Vitalidade', description: 'Aumenta seus pontos de vida.', type: 'accessory', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'hp', value: 15 }], icon: '❤️' },
+    { id: 'amulet-mana', name: 'Amuleto de Mana', description: 'Aumenta reservas de mana.', type: 'accessory', rarity: 'uncommon', price: 2000, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 3 }, { attribute: 'mana', value: 20 }], icon: '💧' },
+    { id: 'amulet-protection', name: 'Amuleto de Proteção', description: 'Proteção mágica.', type: 'accessory', rarity: 'uncommon', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 3 }, { attribute: 'endurance', value: 2 }], icon: '🛡️' },
+    { id: 'amulet-warrior', name: 'Amuleto do Guerreiro', description: 'Força em combate.', type: 'accessory', rarity: 'rare', price: 2800, priceType: 'gold', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'damage', value: 3 }], icon: '⚔️' },
+    { id: 'amulet-sage', name: 'Amuleto do Sábio', description: 'Sabedoria antiga.', type: 'accessory', rarity: 'rare', price: 12, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 4 }, { attribute: 'xpBonus', value: 5 }], icon: '📚' },
+    { id: 'amulet-hunter', name: 'Amuleto do Caçador', description: 'Instinto predador.', type: 'accessory', rarity: 'rare', price: 2800, priceType: 'gold', effects: [{ attribute: 'agility', value: 4 }, { attribute: 'damage', value: 3 }], icon: '🏹' },
+    { id: 'amulet-dragon', name: 'Amuleto do Dragão', description: 'Escama de dragão.', type: 'accessory', rarity: 'rare', price: 13, priceType: 'gems', effects: [{ attribute: 'vitality', value: 4 }, { attribute: 'damage', value: 4 }], icon: '🐉' },
+    { id: 'amulet-phoenix', name: 'Amuleto da Fênix', description: 'Pena da fênix.', type: 'accessory', rarity: 'epic', price: 14, priceType: 'gems', effects: [{ attribute: 'vitality', value: 5 }, { attribute: 'hp', value: 30 }], icon: '🔥' },
+    { id: 'amulet-void', name: 'Amuleto do Vazio', description: 'Energia do vazio.', type: 'accessory', rarity: 'epic', price: 4500, priceType: 'gold', effects: [{ attribute: 'intelligence', value: 5 }, { attribute: 'mana', value: 40 }], icon: '🌑' },
+    { id: 'amulet-titan', name: 'Amuleto do Titã', description: 'Poder titânico.', type: 'accessory', rarity: 'epic', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 5 }, { attribute: 'vitality', value: 4 }], icon: '🗿' },
+    { id: 'amulet-legend', name: 'Amuleto Lendário', description: 'Poder dos antigos campeões.', type: 'accessory', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 3 }, { attribute: 'intelligence', value: 3 }, { attribute: 'agility', value: 3 }, { attribute: 'vitality', value: 3 }, { attribute: 'endurance', value: 3 }], icon: '👑' },
+    { id: 'amulet-god', name: 'Amuleto dos Deuses', description: 'Favor divino.', type: 'accessory', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'vitality', value: 8 }, { attribute: 'hp', value: 50 }, { attribute: 'mana', value: 30 }], icon: '⚜️' },
+
+    // === MONTARIAS ===
+    { id: 'mount-donkey', name: 'Burro', description: 'Lento mas persistente.', type: 'mount', rarity: 'common', price: 1500, priceType: 'gold', effects: [{ attribute: 'endurance', value: 2 }], icon: '🫏' },
+    { id: 'mount-pony', name: 'Pônei', description: 'Pequeno e ágil.', type: 'mount', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'agility', value: 2 }], icon: '🐴' },
+    { id: 'mount-horse', name: 'Cavalo', description: 'Companheiro fiel.', type: 'mount', rarity: 'uncommon', price: 2200, priceType: 'gold', effects: [{ attribute: 'agility', value: 3 }], icon: '🐴' },
+    { id: 'mount-warhorse', name: 'Cavalo de Guerra', description: 'Treinado para batalha.', type: 'mount', rarity: 'uncommon', price: 12, priceType: 'gems', effects: [{ attribute: 'agility', value: 3 }, { attribute: 'strength', value: 1 }], icon: '🏇' },
+    { id: 'mount-wolf', name: 'Lobo Selvagem', description: 'Rápido e feroz.', type: 'mount', rarity: 'rare', price: 3200, priceType: 'gold', effects: [{ attribute: 'agility', value: 4 }, { attribute: 'damage', value: 2 }], icon: '🐺' },
+    { id: 'mount-bear', name: 'Urso de Guerra', description: 'Força bruta.', type: 'mount', rarity: 'rare', price: 15, priceType: 'gems', effects: [{ attribute: 'strength', value: 4 }, { attribute: 'vitality', value: 2 }], icon: '🐻' },
+    { id: 'mount-unicorn', name: 'Unicórnio', description: 'Criatura mágica rara.', type: 'mount', rarity: 'legendary', price: 15, priceType: 'gems', effects: [{ attribute: 'agility', value: 5 }, { attribute: 'intelligence', value: 5 }], icon: '🦄' },
+    { id: 'mount-dragon', name: 'Dragão de Fogo', description: 'A montaria mais poderosa!', type: 'mount', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'agility', value: 6 }, { attribute: 'strength', value: 4 }, { attribute: 'damage', value: 10 }], icon: '🐲' },
+
+    // === CENÁRIOS (BACKGROUNDS) ===
+    { id: 'bg-1', name: 'Cidade Praiana', description: 'Uma vista relaxante da orla urbana.', type: 'background', rarity: 'uncommon', price: 13, priceType: 'gems', effects: [{ attribute: 'vitality', value: 0 }], icon: '🏖️' },
+    { id: 'bg-2', name: 'Alvorada Mística', description: 'O sol nasce em um vale desconhecido.', type: 'background', rarity: 'rare', price: 16, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 0 }], icon: '🌅' },
+    { id: 'bg-3', name: 'Lago de Cristal', description: 'Águas calmas que refletem o céu.', type: 'background', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'endurance', value: 0 }], icon: '💧' },
+    { id: 'bg-4', name: 'Floresta Profunda', description: 'A mata onde o tempo parou.', type: 'background', rarity: 'common', price: 11, priceType: 'gems', effects: [{ attribute: 'vitality', value: 0 }], icon: '🌳' },
+    { id: 'bg-5', name: 'Vale Esmeralda', description: 'Planícies verdes a perder de vista.', type: 'background', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'agility', value: 0 }], icon: '🌿' },
+    { id: 'bg-6', name: 'Noite Estrelada', description: 'Um céu limpo e cheio de mistérios.', type: 'background', rarity: 'uncommon', price: 14, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 0 }], icon: '🌃' },
+    { id: 'bg-7', name: 'Galáxia Distante', description: 'Nebulosas e estrelas infinitas.', type: 'background', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'damage', value: 0 }], icon: '🌌' },
+    { id: 'bg-8', name: 'Floresta das Sombras', description: 'Misteriosa e levemente assustadora.', type: 'background', rarity: 'rare', price: 17, priceType: 'gems', effects: [{ attribute: 'strength', value: 0 }], icon: '🌑' },
+    { id: 'bg-9', name: 'Oasis do Deserto', description: 'Um refúgio no calor escaldante.', type: 'background', rarity: 'uncommon', price: 13, priceType: 'gems', effects: [{ attribute: 'endurance', value: 0 }], icon: '🌴' },
+    { id: 'bg-10', name: 'Templo Antigo', description: 'Ruínas de uma civilização perdida.', type: 'background', rarity: 'rare', price: 16, priceType: 'gems', effects: [{ attribute: 'intelligence', value: 0 }], icon: '🏛️' },
+    { id: 'bg-11', name: 'Montanhas Gélidas', description: 'Picos eternamente cobertos de neve.', type: 'background', rarity: 'uncommon', price: 14, priceType: 'gems', effects: [{ attribute: 'vitality', value: 0 }], icon: '🏔️' },
+    { id: 'bg-12', name: 'Cachoeira Sagrada', description: 'Águas puras que curam a alma.', type: 'background', rarity: 'epic', price: 19, priceType: 'gems', effects: [{ attribute: 'hp', value: 0 }], icon: '🌊' },
+    { id: 'bg-13', name: 'Caverna de Cristais', description: 'Brilho subterrâneo multicolorido.', type: 'background', rarity: 'rare', price: 16, priceType: 'gems', effects: [{ attribute: 'mana', value: 0 }], icon: '💎' },
+    { id: 'bg-14', name: 'Vila Medieval', description: 'O aconchego de um lar simples.', type: 'background', rarity: 'common', price: 10, priceType: 'gems', effects: [{ attribute: 'vitality', value: 0 }], icon: '🏠' },
+    { id: 'bg-15', name: 'Pântano Venenoso', description: 'Cuidado onde pisa!', type: 'background', rarity: 'uncommon', price: 13, priceType: 'gems', effects: [{ attribute: 'endurance', value: 0 }], icon: '🍄' },
+    { id: 'bg-16', name: 'Castelo Real', description: 'O luxo da realeza.', type: 'background', rarity: 'epic', price: 18, priceType: 'gems', effects: [{ attribute: 'strength', value: 0 }], icon: '🏰' },
+    { id: 'bg-17', name: 'Cemitério Assombrado', description: 'Espíritos vagam por aqui.', type: 'background', rarity: 'rare', price: 17, priceType: 'gems', effects: [{ attribute: 'damage', value: 0 }], icon: '👻' },
+    { id: 'bg-18', name: 'Floresta de Outono', description: 'Folhas alaranjadas e clima ameno.', type: 'background', rarity: 'common', price: 11, priceType: 'gems', effects: [{ attribute: 'agility', value: 0 }], icon: '🍂' },
+    { id: 'bg-19', name: 'Campo de Lavanda', description: 'Beleza e perfume inesquecíveis.', type: 'background', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'vitality', value: 0 }], icon: '🪻' },
+
+    // === CONSUMÍVEIS - GOLD ===
+    { id: 'potion-hp-small', name: 'Poção de Vida Pequena', description: 'Recupera 30 HP.', type: 'consumable', rarity: 'common', price: 500, priceType: 'gold', effects: [{ attribute: 'hp', value: 30 }], icon: '🧪' },
+    { id: 'potion-hp-medium', name: 'Poção de Vida Média', description: 'Recupera 60 HP.', type: 'consumable', rarity: 'uncommon', price: 900, priceType: 'gold', effects: [{ attribute: 'hp', value: 60 }], icon: '🧪' },
+    { id: 'potion-mana-small', name: 'Poção de Mana Pequena', description: 'Recupera 30 Mana.', type: 'consumable', rarity: 'common', price: 500, priceType: 'gold', effects: [{ attribute: 'mana', value: 30 }], icon: '💧' },
+    { id: 'potion-mana-medium', name: 'Poção de Mana Média', description: 'Recupera 50 Mana.', type: 'consumable', rarity: 'uncommon', price: 800, priceType: 'gold', effects: [{ attribute: 'mana', value: 50 }], icon: '💧' },
+
+    // === CONSUMÍVEIS - DIAMOND (INSTANT) ===
+    { id: 'potion-hp-small-gem', name: 'Poção de Vida Instantânea', description: 'Recupera 30 HP (Entrega Imediata).', type: 'consumable', rarity: 'rare', price: 5, priceType: 'gems', effects: [{ attribute: 'hp', value: 30 }], icon: '🧪⚡' },
+    { id: 'potion-hp-medium-gem', name: 'Poção de Vida Potente', description: 'Recupera 60 HP (Entrega Imediata).', type: 'consumable', rarity: 'rare', price: 5, priceType: 'gems', effects: [{ attribute: 'hp', value: 60 }], icon: '🧪⚡' },
+    { id: 'potion-mana-small-gem', name: 'Poção de Mana Instantânea', description: 'Recupera 30 Mana (Entrega Imediata).', type: 'consumable', rarity: 'rare', price: 5, priceType: 'gems', effects: [{ attribute: 'mana', value: 30 }], icon: '💧⚡' },
+
+    { id: 'potion-hp-full', name: 'Poção de Vida Completa', description: 'Recupera 100% do HP.', type: 'consumable', rarity: 'legendary', price: 10, priceType: 'gems', effects: [{ attribute: 'hp', value: 9999 }], icon: '❤️🔥' },
+
+    // === BUFFS ===
+    { id: 'buff-xp-small', name: 'Pergaminho de XP', description: '+5% XP por 1 dia.', type: 'buff', rarity: 'common', price: 800, priceType: 'gold', effects: [{ attribute: 'xpBonus', value: 5 }], icon: '📜', buffDuration: 1 },
+    { id: 'buff-gold-small', name: 'Moeda da Sorte', description: '+5% Ouro por 1 dia.', type: 'buff', rarity: 'common', price: 800, priceType: 'gold', effects: [{ attribute: 'goldBonus', value: 5 }], icon: '🪙', buffDuration: 1 },
+    { id: 'buff-all-premium', name: 'Poder Supremo', description: '+15% em TUDO por 5 dias.', type: 'buff', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'xpBonus', value: 15 }, { attribute: 'goldBonus', value: 15 }, { attribute: 'damage', value: 15 }], icon: '⚡', buffDuration: 5 },
+
+    // === ESPECIAIS ===
+    { id: 'special-lucky-charm', name: 'Amuleto da Sorte', description: 'Aumenta drop de itens.', type: 'accessory', rarity: 'rare', price: 10, priceType: 'gems', effects: [{ attribute: 'goldBonus', value: 10 }], icon: '🍀' },
+    { id: 'special-godslayer', name: 'Matador de Deuses', description: 'O item mais poderoso.', type: 'accessory', rarity: 'legendary', price: 20, priceType: 'gems', effects: [{ attribute: 'damage', value: 25 }, { attribute: 'strength', value: 8 }, { attribute: 'agility', value: 5 }], icon: '☠️' }
+];
