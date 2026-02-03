@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import { BackgroundMusic } from "./components/game/BackgroundMusic";
 
 const queryClient = new QueryClient();
 
@@ -15,15 +14,14 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BackgroundMusic />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          <Toaster />
+          <Sonner />
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
