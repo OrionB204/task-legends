@@ -150,20 +150,12 @@ export function GameWiki({ open, onOpenChange }: GameWikiProps) {
 
                                 <div className="bg-orange-500/10 p-3 pixel-border border-orange-500/30 space-y-2">
                                     <p className="font-bold text-orange-500 underline flex items-center gap-2">
-                                        <Flame className="w-3 h-3" /> O GOLPE CARREGADO: SUPERNOVA
+                                        <Zap className="w-3 h-3" /> ATAQUES CRÍTICOS (SURPRESA!)
                                     </p>
-                                    <p>O Boss carrega um ataque devastador em um ciclo de <span className="font-bold">3 dias</span>.</p>
-                                    <p>• <span className="font-bold">A Barra de Carga:</span> Se chegar a 100%, libera a Supernova, causando dano massivo (40% HP) em toda a raid.</p>
-                                    <p>• <span className="font-bold">Prevenção:</span> Concluir tarefas <span className="underline italic">DIMINUI</span> a barra de carga do Boss.</p>
-                                </div>
-
-                                <div className="bg-primary/10 p-3 pixel-border border-primary/30 space-y-2">
-                                    <p className="font-bold text-primary underline flex items-center gap-2">
-                                        <Zap className="w-3 h-3" /> ESTADO DE ATORDOAMENTO (STUN)
-                                    </p>
-                                    <p>Se o grupo for extremamente produtivo e zerar a Barra de Carga do Boss:</p>
-                                    <p>• O Boss ficará <span className="font-black text-primary">ATORDOADO</span> por 6 horas.</p>
-                                    <p>• Durante o atordoamento, o Boss recebe <span className="font-black underline scale-110 inline-block">DANO EM DOBRO (2x)</span> de todas as fontes!</p>
+                                    <p>O Boss pode atacar a qualquer momento enquanto você navega na Raid!</p>
+                                    <p>• <span className="font-bold">Chance:</span> Há 15% de chance de um Crítico ao abrir o painel ou interagir.</p>
+                                    <p>• <span className="font-bold">Dano:</span> Causa 5% de dano no HP Total de TODOS os membros.</p>
+                                    <p>• <span className="font-bold">Limite:</span> Ocorre no máximo 3 vezes por dia por Raid.</p>
                                 </div>
 
                                 <div className="bg-destructive/10 p-3 pixel-border border-destructive/30">
