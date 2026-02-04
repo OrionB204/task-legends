@@ -68,7 +68,7 @@ export function AuthForm() {
         <div className="min-h-screen flex items-center justify-center bg-background p-4 pattern-grid">
             <Card className="w-full max-w-md pixel-border shadow-xl bg-card/95 backdrop-blur">
                 <CardHeader className="text-center space-y-1">
-                    <CardTitle className="text-2xl font-bold tracking-tighter glow-text">TasKLegends</CardTitle>
+                    <CardTitle className="text-2xl font-bold tracking-tighter glow-text">TasKLegends.</CardTitle>
                     <CardDescription>Sua produtividade, gamificada.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
