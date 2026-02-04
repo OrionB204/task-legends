@@ -65,10 +65,7 @@ export function AuthForm() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-background p-4 pattern-grid relative">
-            <div className="fixed top-0 left-0 w-full bg-green-600 text-white p-2 text-center z-[99999] font-bold text-xs">
-                VERSÃO ATUALIZADA - SEM BOTÕES FLUTUANTES
-            </div>
+        <div className="min-h-screen flex items-center justify-center bg-background p-4 pattern-grid">
             <Card className="w-full max-w-md pixel-border shadow-xl bg-card/95 backdrop-blur">
                 <CardHeader className="text-center space-y-1">
                     <CardTitle className="text-2xl font-bold tracking-tighter glow-text">TasKLegends.</CardTitle>

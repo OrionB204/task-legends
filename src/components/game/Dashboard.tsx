@@ -110,11 +110,8 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 sm:pb-8 selection:bg-primary/30">
-      <div className="bg-emerald-600 text-white text-[10px] text-center font-bold px-2 py-1 fixed top-0 left-0 right-0 z-[99999]">
-        v3.0 - LIMPEZA FORÇADA ATIVA
-      </div>
       {/* Top Hybrid Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-[#1a103c] border-b-4 border-[#3d2b7a] shadow-2xl overflow-x-auto no-scrollbar pt-6">
+      <nav className="sticky top-0 z-50 bg-[#1a103c] border-b-4 border-[#3d2b7a] shadow-2xl overflow-x-auto no-scrollbar">
         <div className="container max-w-7xl px-0 sm:px-6">
           <div className="flex items-center justify-between min-w-[500px] sm:min-w-0">
             {/* Logo - Solo on Desktop */}
