@@ -52,9 +52,6 @@ export function BossDisplay({ raid, averageLevel = 1 }: BossDisplayProps) {
       bossVisual.isEnraged && "animate-pulse border-destructive",
       bossVisual.isEvolved && "pixel-border-gold"
     )}>
-      <div className="bg-red-500 text-white text-[20px] font-bold text-center absolute top-0 left-0 w-full z-[100]">
-        ARQUIVO ATUALIZADO (DEBUG)
-      </div>
       {/* Background effects */}
       {bossVisual.isEnraged && (
         <div className="absolute inset-0 bg-gradient-to-t from-destructive/20 to-transparent pointer-events-none" />
@@ -128,7 +125,7 @@ export function BossDisplay({ raid, averageLevel = 1 }: BossDisplayProps) {
           <div
             className={cn(
               "absolute inset-y-0 left-0 transition-all duration-500",
-              hpPercentage > 50 ? "bg-destructive" :
+              hpPercentage > 50 ? "bg-gradient-to-r from-purple-600 to-indigo-600" :
                 hpPercentage > 25 ? "bg-primary" :
                   "bg-destructive animate-pulse"
             )}
