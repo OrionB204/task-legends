@@ -30,7 +30,8 @@ export function RaidPanel() {
     deleteRaid,
     getRaidMembers,
     damageLogs,
-    isCreating
+    isCreating,
+    triggerBossRandomCrit
   } = useRaids();
 
   const [createOpen, setCreateOpen] = useState(false);
@@ -75,6 +76,26 @@ export function RaidPanel() {
 
     fetchProfiles();
   }, [raidMembers]);
+
+  // --- GATILHO DE GOLPE CRÍTICO (15% chance ao interagir) ---
+  useEffect(() => {
+    if (myActiveRaid && triggerBossRandomCrit) {
+      // 1. Gatilho ao abrir a Raid
+      triggerBossRandomCrit();
+
+      // 2. Gatilho ao clicar em qualquer botão dentro do painel
+      const handleGlobalClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.closest('button')) {
+          triggerBossRandomCrit();
+        }
+      };
+
+      document.addEventListener('click', handleGlobalClick);
+      return () => document.removeEventListener('click', handleGlobalClick);
+    }
+  }, [myActiveRaid?.id]);
+  // ---------------------------------------------------------
 
   const handleCreate = () => {
     if (!newRaidName.trim()) return;

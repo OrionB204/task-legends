@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Raid } from '@/types/social';
 import { Progress } from '@/components/ui/progress';
 import { Skull, Flame, Zap } from 'lucide-react';
@@ -146,48 +147,6 @@ export function BossDisplay({ raid, averageLevel = 1 }: BossDisplayProps) {
         <div className="flex justify-between text-[8px] text-muted-foreground">
           <span>⚔️ Dano: {scaledDamage}</span>
           <span>📊 Nível médio do grupo: {averageLevel.toFixed(1)}</span>
-        </div>
-
-        {/* Supernova / Stun Mechanics */}
-        <div className="mt-4 pt-4 border-t border-white/10 space-y-3">
-          {raid.is_stunned ? (
-            <div className="flex flex-col items-center gap-2 animate-bounce">
-              <div className="bg-primary/20 text-primary px-4 py-2 pixel-border border-double border-primary glow-gold">
-                <p className="text-[12px] font-black uppercase tracking-tighter">🌟 BOSS ATORDUADO! 🌟</p>
-                <p className="text-[8px] font-bold text-center">DANO EM DOBRO ATIVADO</p>
-              </div>
-              <p className="text-[7px] text-muted-foreground uppercase">
-                Recupera em: {raid.stunned_until ? formatDistanceToNow(new Date(raid.stunned_until), { locale: ptBR }) : '...'}
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <Flame className="w-4 h-4 text-orange-500 animate-pulse" />
-                  <span className="text-[10px] text-orange-500 font-bold uppercase tracking-tighter">Carga de Fogo: SUPERNOVA</span>
-                </div>
-                <span className="text-[10px] text-orange-500 font-black">{raid.charge_meter || 0}%</span>
-              </div>
-
-              <div className="relative h-4 pixel-border bg-black/40 overflow-hidden">
-                <div
-                  className="absolute inset-y-0 left-0 bg-gradient-to-r from-orange-400 to-red-600 transition-all duration-1000 animate-pulse"
-                  style={{ width: `${raid.charge_meter || 0}%` }}
-                />
-                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-              </div>
-
-              <div className="space-y-1">
-                <p className="text-[7px] text-muted-foreground text-center uppercase font-bold italic">
-                  Zere a carga com tarefas concluídas para ATORDUAR o boss!
-                </p>
-                <p className="text-[7px] text-orange-400/80 text-center uppercase font-black">
-                  "A CADA TRÊS DIAS, O BOSS LANÇA UM ATAQUE NOS MEMBROS DA RAID, AS TAREFAS PODEM DIMINUIR ESSA POSSIBILIDADE"
-                </p>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

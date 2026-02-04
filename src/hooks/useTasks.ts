@@ -9,6 +9,7 @@ import {
   calculateGoldGain,
   calculateManaGain,
   calculateDamage,
+  calculateRaidDamage,
   TaskDifficulty,
   FREE_TASK_LIMIT,
   DIFFICULTY_MULTIPLIERS
@@ -127,8 +128,8 @@ export function useTasks() {
         throw new Error('Limite de tarefas gratuitas atingido. Faça upgrade para PRO!');
       }
 
-      const xpReward = calculateXpGain(task.difficulty);
-      const goldReward = calculateGoldGain(task.difficulty);
+      const xpReward = calculateXpGain(task.difficulty, profile?.intelligence || 0);
+      const goldReward = calculateGoldGain(task.difficulty, profile?.perception || 0);
 
       const { data, error } = await supabase
         .from('tasks')
@@ -183,20 +184,27 @@ export function useTasks() {
     },
     onSuccess: async (task) => {
       if (profile && task) {
-        await addXp(task.xp_reward);
-        await addGold(task.gold_reward);
-        await addMana(calculateManaGain(task.difficulty, profile.player_class));
+        // 1. Re-calculate rewards based on CURRENT attributes to be fair
+        const xpGain = calculateXpGain(task.difficulty, profile.intelligence);
+        const goldGain = calculateGoldGain(task.difficulty, profile.perception);
+        const manaGain = calculateManaGain(task.difficulty, profile.player_class, profile.intelligence);
 
-        // Deal damage to raid boss if in an active raid
+        await addXp(xpGain);
+        await addGold(goldGain);
+        await addMana(manaGain);
+
+        // 2. Deal damage to raid boss if in an active raid
         if (myActiveRaid) {
-          const damage = profile.level * DIFFICULTY_MULTIPLIERS[task.difficulty];
+          // Normal Damage (scaled by level)
+          const damage = calculateRaidDamage(profile.level * DIFFICULTY_MULTIPLIERS[task.difficulty], profile.level);
           await dealDamageToBoss(myActiveRaid.id, damage, task.title);
+
           toast.success(
-            `✅ Tarefa completada! +${task.xp_reward} XP, +${task.gold_reward} Ouro, ⚔️ ${damage} dmg ao Boss!`
+            `✅ Missão Cumprida! +${xpGain} XP, +${goldGain} Ouro, ⚔️ ${damage} dmg ao Boss!`
           );
         } else {
           toast.success(
-            `✅ Tarefa completada! +${task.xp_reward} XP, +${task.gold_reward} Ouro`
+            `✅ Missão Cumprida! +${xpGain} XP, +${goldGain} Ouro`
           );
         }
       }
@@ -251,7 +259,8 @@ export function useTasks() {
   const failTask = async (task: Task) => {
     if (!profile) return;
 
-    const damage = calculateDamage(profile.level, task.difficulty, profile.player_class);
+    // Damage influenced by Constitution and Class
+    const damage = calculateDamage(profile.level, task.difficulty, profile.player_class, profile.constitution);
 
     await supabase
       .from('tasks')
@@ -260,7 +269,7 @@ export function useTasks() {
 
     await takeDamage(damage);
 
-    toast.error(`💔 Tarefa falhou! Você recebeu ${damage} de dano.`);
+    toast.error(`💔 Missão falhou! Você recebeu ${damage} de dano.`);
     queryClient.invalidateQueries({ queryKey: ['tasks', user?.id] });
   };
 

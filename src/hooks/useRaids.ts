@@ -155,54 +155,19 @@ export function useRaids() {
       .from('raids')
       .select('*')
       .eq('id', raidId)
-      .single();
+      .single() as { data: Raid | null, error: any };
 
     if (!raid || raid.status !== 'active') return;
 
-    let finalDamage = calculateRaidDamage(damage, profile?.level || 1);
-
-    // STUN MECHANIC: Double damage if boss is stunned
-    if (raid.is_stunned && raid.stunned_until) {
-      if (new Date(raid.stunned_until) > new Date()) {
-        finalDamage *= 2;
-      } else {
-        // Stun expired
-        await supabase.from('raids').update({ is_stunned: false } as any).eq('id', raidId);
-      }
-    }
-
+    const now = new Date();
+    const finalDamage = calculateRaidDamage(damage, profile?.level || 1);
     const newHp = Math.max(raid.boss_current_hp - finalDamage, 0);
-
-    // Charge Reduction Mechanic
-    let newCharge = (raid.charge_meter || 0);
-    if (!raid.is_stunned) {
-      // Reduce charge by a percentage of the boss max HP
-      const chargeReduction = Math.max(1, Math.floor((finalDamage / raid.boss_max_hp) * 100));
-      newCharge = Math.max(0, newCharge - chargeReduction);
-
-      // If charge reaches 0, boss gets stunned!
-      if (newCharge <= 0 && (raid.charge_meter || 0) > 0) {
-        await supabase.from('raids').update({
-          is_stunned: true,
-          stunned_until: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(), // 6 hours
-          charge_meter: 0
-        } as any).eq('id', raidId);
-
-        await supabase.from('messages').insert({
-          channel_type: 'raid',
-          channel_id: raidId,
-          sender_id: user.id,
-          content: `🌟 ESTUPORADO! O Boss foi atordoado e receberá DANO EM DOBRO pelas próximas 6 horas!`
-        });
-      }
-    }
 
     await supabase
       .from('raids')
       .update({
         boss_current_hp: newHp,
-        status: newHp <= 0 ? 'victory' : 'active',
-        charge_meter: newCharge
+        status: newHp <= 0 ? 'victory' : 'active'
       } as any)
       .eq('id', raidId);
 
@@ -238,13 +203,13 @@ export function useRaids() {
       .select('task_counter, user_id, damage_dealt')
       .eq('raid_id', raidId)
       .eq('user_id', user.id)
-      .single();
+      .single() as { data: RaidMember | null, error: any };
 
     const newCounter = ((currentMember as any)?.task_counter || 0) + 1;
 
     // Check if skill triggers (every 3 tasks)
     if (newCounter >= 3) {
-      await supabase.from('raid_members').update({ task_counter: 0 }).eq('raid_id', raidId).eq('user_id', user.id);
+      await supabase.from('raid_members').update({ task_counter: 0 } as any).eq('raid_id', raidId).eq('user_id', user.id);
 
       if (profile?.player_class === 'mage') {
         const bonusDamage = Math.floor(finalDamage * 0.5);
@@ -286,7 +251,7 @@ export function useRaids() {
         });
       }
     } else {
-      await supabase.from('raid_members').update({ task_counter: newCounter }).eq('raid_id', raidId).eq('user_id', user.id);
+      await supabase.from('raid_members').update({ task_counter: newCounter } as any).eq('raid_id', raidId).eq('user_id', user.id);
     }
 
     queryClient.invalidateQueries({ queryKey: ['raids'] });
@@ -320,18 +285,6 @@ export function useRaids() {
       const bossDamageBase = myActiveRaid.boss_damage || 10;
       let totalDamage = oldTasks.length * bossDamageBase;
 
-      // WARRIOR PASSIVE: Baluarte (Reduces damage for Everyone in the team)
-      const { data: raidMembers } = await supabase.from('raid_members').select('user_id').eq('raid_id', myActiveRaid.id);
-      if (raidMembers) {
-        const userIds = raidMembers.map(m => m.user_id);
-        const { data: memberProfiles } = await supabase.from('profiles').select('player_class').in('user_id', userIds);
-        const hasWarrior = memberProfiles?.some(p => p.player_class === 'warrior');
-        if (hasWarrior) {
-          totalDamage = Math.floor(totalDamage * 0.7); // 30% reduction
-          toast.info('🛡️ O Guerreiro do grupo reduziu o dano do Boss em 30%!');
-        }
-      }
-
       await takeDamage(totalDamage);
 
       for (const task of oldTasks) {
@@ -357,54 +310,95 @@ export function useRaids() {
     queryClient.invalidateQueries({ queryKey: ['raid_members'] });
   };
 
-  const checkSupernovaStatus = async () => {
-    if (!user || !myActiveRaid || !profile) return;
+  const triggerBossRandomCrit = async () => {
+    if (!user || !myActiveRaid) return;
 
-    // Only check if active and NOT stunned
-    if (myActiveRaid.status !== 'active' || myActiveRaid.is_stunned) return;
+    // 15% chance
+    if (Math.random() > 0.15) return;
 
-    const lastCheck = myRaidMemberships.find(m => m.raid_id === myActiveRaid.id)?.last_damage_check;
-    const now = new Date();
-    const chargeDeadline = myActiveRaid.charge_deadline ? new Date(myActiveRaid.charge_deadline) : null;
+    const todayStr = new Date().toISOString().split('T')[0];
 
-    // Logic: Increase charge based on time passed
-    // If deadline passed, blast Supernova
-    if (chargeDeadline && now > chargeDeadline) {
-      const damage = Math.floor(profile.max_hp * 0.4); // 40% of max HP
-      await takeDamage(damage);
+    // Refresh raid data to get latest crit count
+    const { data: raid } = await supabase
+      .from('raids')
+      .select('daily_crit_count, last_crit_reset_date, boss_name')
+      .eq('id', myActiveRaid.id)
+      .single() as { data: any, error: any };
 
-      // Reset charge meter and set new deadline (3 days from now)
-      await supabase.from('raids').update({
-        charge_meter: 0,
-        charge_deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
-      } as any).eq('id', myActiveRaid.id);
+    if (!raid) return;
 
-      await supabase.from('messages').insert({
-        channel_type: 'raid',
-        channel_id: myActiveRaid.id,
-        sender_id: 'SYSTEM',
-        content: `💥 SUPERNOVA! O Boss liberou sua carga devastadora causando ${damage} de dano a todos!`
-      });
+    let critCount = raid.daily_crit_count || 0;
+    if (raid.last_crit_reset_date !== todayStr) {
+      critCount = 0;
+    }
 
-      toast.error(`💥 SUPERNOVA! Você recebeu ${damage} de dano massivo!`);
-    } else {
-      // Increment charge meter slowly if it hasn't been updated for a while
-      // For simplicity in this demo, we'll increment when tasks are failed too, 
-      // but here we mark the tick
-      const chargeIncrease = 5; // 5% increase per tick (daily check)
-      const currentMeter = myActiveRaid.charge_meter || 0;
-      if (currentMeter < 100) {
-        await supabase.from('raids').update({
-          charge_meter: Math.min(100, currentMeter + chargeIncrease)
-        } as any).eq('id', myActiveRaid.id);
+    // Limitação: 3 vezes ao dia
+    if (critCount >= 3) return;
+
+    // Boss Skills Mapping
+    const bossSkillNames: Record<string, string> = {
+      'Dragão de Fogo': 'Sopro de Plasma',
+      'Hydra de Código': 'Loop Infinito',
+      'Golem de Pedra': 'Terremoto de Dados',
+      'Fênix Sombria': 'Explosão Estelar',
+      'Kraken Abissal': 'Tsunami Binária',
+    };
+
+    const skillName = bossSkillNames[raid.boss_name] || 'Ataque Devastador';
+
+    // Ação: 5% HP dano em todos os usuários
+    const { data: members } = await supabase
+      .from('raid_members')
+      .select('user_id')
+      .eq('raid_id', myActiveRaid.id);
+
+    if (members) {
+      for (const m of members) {
+        const { data: p } = await supabase
+          .from('profiles')
+          .select('current_hp, max_hp')
+          .eq('user_id', m.user_id)
+          .single();
+
+        if (p) {
+          const damage = Math.max(1, Math.floor(p.max_hp * 0.05));
+          await supabase
+            .from('profiles')
+            .update({ current_hp: Math.max(0, p.current_hp - damage) })
+            .eq('user_id', m.user_id);
+        }
       }
     }
+
+    // Atualizar contador e Log
+    await supabase.from('raids').update({
+      daily_crit_count: critCount + 1,
+      last_crit_reset_date: todayStr
+    } as any).eq('id', myActiveRaid.id);
+
+    await supabase.from('raid_damage_logs' as any).insert({
+      raid_id: myActiveRaid.id,
+      user_id: 'SYSTEM',
+      damage_amount: 5, // Representando 5%
+      type: 'boss_to_player',
+      task_title: `CRÍTICO: ${skillName}`
+    });
+
+    await supabase.from('messages').insert({
+      channel_type: 'raid',
+      channel_id: myActiveRaid.id,
+      sender_id: 'SYSTEM',
+      content: `💥 CRÍTICO! O Boss usou ${skillName} e causou 5% de dano em todo o grupo!`
+    });
+
+    toast.error(`💥 CRÍTICO! O Boss usou ${skillName}!`);
+    queryClient.invalidateQueries({ queryKey: ['raids'] });
+    queryClient.invalidateQueries({ queryKey: ['raid_damage_logs'] });
   };
 
   useEffect(() => {
     if (myActiveRaid && profile) {
       checkDailyBossDamage();
-      checkSupernovaStatus();
     }
   }, [myActiveRaid?.id, profile?.id]);
 
@@ -491,6 +485,7 @@ export function useRaids() {
     },
     inviteByEmail,
     damageLogs,
+    triggerBossRandomCrit,
     isCreating: createRaid.isPending,
   };
 }

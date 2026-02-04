@@ -48,6 +48,9 @@ export interface Raid {
   charge_deadline?: string;
   is_stunned?: boolean;
   stunned_until?: string;
+  last_daily_event_at?: string;
+  daily_crit_count?: number;
+  last_crit_reset_date?: string;
 }
 
 export interface RaidMember {
@@ -57,6 +60,9 @@ export interface RaidMember {
   damage_dealt: number;
   is_leader: boolean;
   joined_at: string;
+  task_counter?: number;
+  daily_task_count?: number;
+  last_task_reset?: string;
 }
 
 export interface Message {
