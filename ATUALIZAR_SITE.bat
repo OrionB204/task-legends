@@ -1,22 +1,13 @@
 @echo off
-echo ==========================================
-echo   FORCANDO LIMPEZA E ATUALIZACAO
-echo ==========================================
-echo.
-echo 1. Adicionando todas as mudancas...
+echo ========================================
+echo   ATUALIZANDO TASKLEGENDS (FORCADO)
+echo ========================================
 git add .
-
-echo.
-echo 2. Salvando alteracoes (Commit)...
-git commit -m "style: force hide floating buttons via css override"
-
-echo.
-echo 3. Enviando para o GitHub (Push)...
-git push
-
-echo.
-echo ==========================================
-echo   SUCESSO! O Vercel deve atualizar em breve.
-echo   Se os botoes nao sumirem, limpe o cache do seu celular.
-echo ==========================================
+git commit -m "fix: manual force update and button removal"
+git push origin master --force
+git push origin main --force
+echo ========================================
+echo   PROCESSO CONCLUIDO! 
+echo   Aguarde 1 minuto e recarregue o site.
+echo ========================================
 pause
