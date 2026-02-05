@@ -30,17 +30,36 @@ export function AuthForm() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isLoading) return;
         setIsLoading(true);
 
-        const { error } = await signIn(loginEmail, loginPassword);
+        try {
+            // Promessa de Login
+            const loginPromise = signIn(loginEmail, loginPassword);
 
-        if (error) {
-            toast.error(error.message);
-        } else {
-            toast.success('Bem-vindo de volta! 🎮');
+            // Promessa de Timeout (15 segundos)
+            const timeoutPromise = new Promise<{ error: Error | null }>((_, reject) =>
+                setTimeout(() => reject(new Error('Demora excessiva na conexão. Verifique sua internet e tente novamente.')), 15000)
+            );
+
+            // Corrida!
+            const { error } = await Promise.race([loginPromise, timeoutPromise]);
+
+            if (error) {
+                toast.error(error.message || 'Erro ao realizar login.');
+            } else {
+                toast.success('Bem-vindo de volta! 🎮');
+            }
+        } catch (err: any) {
+            // Captura erros de timeout ou outros erros inesperados
+            console.error("Erro no login:", err);
+            toast.error(err.message || "Erro desconhecido ao tentar entrar.");
+        } finally {
+            // Garante que o loading pare, aconteça o que acontecer
+            if (true) { // Small check just to keep structure
+                setIsLoading(false);
+            }
         }
-
-        setIsLoading(false);
     };
 
     const handleRegister = async (e: React.FormEvent) => {
