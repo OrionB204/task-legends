@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChatBox } from './ChatBox';
 import { RaidManagement } from './RaidManagement';
-import { BossDisplay } from '@/components/game/BossDisplay';
+import { BossDisplayV2 } from '@/components/game/BossDisplayV2';
 import { PixelAvatar } from '@/components/game/PixelAvatar';
 import { Raid, RaidMember, BOSS_TEMPLATES } from '@/types/social';
 import { supabase } from '@/integrations/supabase/client';
@@ -128,7 +128,7 @@ export function RaidPanel() {
     return (
       <div className="space-y-4">
         {/* Boss Display - Large and prominent */}
-        <BossDisplay raid={myActiveRaid} averageLevel={averageLevel} />
+        <BossDisplayV2 raid={myActiveRaid} averageLevel={averageLevel} />
 
         {/* Raid Info & Management */}
         <Card className="pixel-border">
