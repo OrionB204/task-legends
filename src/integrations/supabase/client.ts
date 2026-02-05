@@ -5,18 +5,30 @@ import type { Database } from './types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "";
 const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "";
 
-// Se as chaves estiverem faltando, usamos valores de teste para não quebrar o site inteiro
-const safeUrl = SUPABASE_URL && SUPABASE_URL.startsWith('http') ? SUPABASE_URL : "https://placeholder-project.supabase.co";
-const safeKey = SUPABASE_PUBLISHABLE_KEY || "placeholder-key";
-
-if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
-  console.warn("AVISO: Chaves do Supabase estão faltando nas variáveis de ambiente!");
+// Diagnóstico de conexão para o "Failed to Fetch" no mobile
+if (typeof window !== 'undefined') {
+  (window as any).__SUPABASE_DIAGNOSTIC = {
+    hasUrl: !!SUPABASE_URL,
+    hasKey: !!SUPABASE_PUBLISHABLE_KEY,
+    urlPrefix: SUPABASE_URL ? SUPABASE_URL.substring(0, 15) : "MISSING",
+    mode: import.meta.env.MODE
+  };
 }
 
-export const supabase = createClient<Database>(safeUrl, safeKey, {
-  auth: {
-    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-    persistSession: true,
-    autoRefreshToken: true,
+if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
+  console.error("ERRO CRÍTICO: Chaves do Supabase não encontradas! O login vai falhar com 'Failed to fetch'.");
+  console.log("Verifique se o seu arquivo .env contém VITE_SUPABASE_URL e VITE_SUPABASE_PUBLISHABLE_KEY");
+}
+
+export const supabase = createClient<Database>(
+  SUPABASE_URL || "https://placeholder-to-avoid-crash.supabase.co",
+  SUPABASE_PUBLISHABLE_KEY || "placeholder-key",
+  {
+    auth: {
+      storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
   }
-});
+);

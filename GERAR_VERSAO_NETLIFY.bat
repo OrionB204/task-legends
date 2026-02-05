@@ -5,17 +5,23 @@ echo   TASKLEGENDS: Sincronizar e Gerar Versao
 echo ===================================================
 echo.
 
-echo 1. SALVANDO NO GITHUB (Backup de Seguranca)...
+echo 1. SALVANDO NO GITHUB (Opcional)...
 git add .
-set /p commit_msg="Digite uma mensagem para o update (ou Enter para padrao): "
-if "!commit_msg!"=="" set commit_msg=update manual netlify drop
-git commit -m "!commit_msg!"
+set commit_msg=update manual netlify drop
+set /p commit_msg="Digite uma mensagem ou ENTER para padrao: "
+git commit -m "%commit_msg%"
 
-echo    - Enviando para o GitHub...
-git push origin master --force
-git push origin main --force
-git push origin deploy-fix --force
-echo    [OK] Codigo salvo na nuvem!
+echo    - Tentando enviar para a nuvem...
+(git push origin master --force && git push origin main --force && git push origin deploy-fix --force) > push_log.txt 2>&1
+
+if %errorlevel% neq 0 (
+    echo.
+    echo    [!] AVISO: O backup no GitHub falhou (provavelmente devido ao arquivo de audio antigo).
+    echo    [!] NAO SE PREOCUPE: O site para o Netlify Drop sera gerado normalmente abaixo.
+    echo.
+) else (
+    echo    [OK] Codigo salvo com sucesso no GitHub!
+)
 
 echo.
 echo 2. CONSTRUINDO O SITE (Aguarde...)...
