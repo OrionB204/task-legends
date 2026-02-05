@@ -228,7 +228,7 @@ export function Dashboard() {
                 <div className="pixel-border bg-card/40 p-6 flex flex-col items-center justify-center text-center space-y-4 min-h-[300px]">
                   <Button
                     onClick={() => setShopOpen(true)}
-                    className="pixel-button bg-gold text-black px-12 h-12 glow-gold"
+                    className="pixel-button bg-gold text-black w-full max-w-xs sm:max-w-none sm:px-12 h-auto py-3 sm:h-12 glow-gold whitespace-normal leading-tight text-xs sm:text-sm"
                   >
                     ABRIR MERCADO DE EQUIPAMENTOS
                   </Button>

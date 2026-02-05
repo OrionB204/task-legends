@@ -171,7 +171,7 @@ export function Shop({ open, onOpenChange, defaultTab = "weapons" }: ShopProps) 
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col overflow-hidden">
           <div className="px-6 py-2 border-b border-border bg-muted/10">
-            <TabsList className="grid grid-cols-4 md:flex md:flex-wrap items-center justify-center w-full h-auto p-1.5 gap-1.5 bg-black/40 pixel-border border-[#3d2b7a]/50">
+            <TabsList className="grid grid-cols-2 sm:grid-cols-4 md:flex md:flex-wrap items-center justify-center w-full h-auto p-1.5 gap-1.5 bg-black/40 pixel-border border-[#3d2b7a]/50">
               <TabsTrigger
                 value="weapons"
                 className="text-[11px] font-black uppercase px-3 py-2.5 flex-1 min-w-[85px] data-[state=active]:bg-primary/20 data-[state=active]:text-primary"
