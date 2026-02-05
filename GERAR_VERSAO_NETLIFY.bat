@@ -12,12 +12,14 @@ set /p commit_msg="Digite uma mensagem ou ENTER para padrao: "
 git commit -m "%commit_msg%"
 
 echo    - Tentando enviar para a nuvem...
-(git push origin master --force && git push origin main --force && git push origin deploy-fix --force) > push_log.txt 2>&1
+git push origin master --force > push_log.txt 2>&1
+git push origin main --force >> push_log.txt 2>&1
+git push origin deploy-fix --force >> push_log.txt 2>&1
 
-if %errorlevel% neq 0 (
+if %ERRORLEVEL% NEQ 0 (
     echo.
-    echo    [!] AVISO: O backup no GitHub falhou (provavelmente devido ao arquivo de audio antigo).
-    echo    [!] NAO SE PREOCUPE: O site para o Netlify Drop sera gerado normalmente abaixo.
+    echo    [!] AVISO: O backup no GitHub falhou (historico de arquivos grandes).
+    echo    [!] NAO SE PREOCUPE: O site para o Netlify sera gerado agora.
     echo.
 ) else (
     echo    [OK] Codigo salvo com sucesso no GitHub!
