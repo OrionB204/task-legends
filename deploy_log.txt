@@ -1,0 +1,6 @@
+Building using Dockerfile and deploying container to Cloud Run service [tasklegends] in project [tasklegends] region [us-central1]
+Building and deploying new service...
+Validating configuration..............done
+Creating Container Repository...............failed
+Deployment failed
+ERROR: (gcloud.run.deploy) ALREADY_EXISTS: Requested entity already exists

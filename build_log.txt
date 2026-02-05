@@ -1,0 +1,9 @@
+Creating temporary archive of 315 file(s) totalling 25.4 MiB before compression.
+Some files were not included in the source upload.
+
+Check the gcloud log [C:\Users\david\AppData\Roaming\gcloud\logs\2026.02.05\19.37.41.054238.log] to see which files and the contents of the
+default gcloudignore file used (see `$ gcloud topic gcloudignore` to learn
+more).
+
+Uploading tarball of [.] to [gs://tasklegends_cloudbuild/source/1770331061.451687-23727f8dfeec403ca356e2212c522bd8.tgz]
+ERROR: (gcloud.builds.submit) INVALID_ARGUMENT: could not resolve source: googleapi: Error 403: 1086404721518-compute@developer.gserviceaccount.com does not have storage.objects.get access to the Google Cloud Storage object. Permission 'storage.objects.get' denied on resource (or it may not exist)., forbidden
