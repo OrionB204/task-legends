@@ -33,7 +33,7 @@ const getBossVisual = (bossName: string, avgLevel: number) => {
     };
 };
 
-export function BossDisplayV2({ raid, averageLevel = 1 }: BossDisplayProps) {
+export function BossDisplay({ raid, averageLevel = 1 }: BossDisplayProps) {
     const hpPercentage = (raid.boss_current_hp / raid.boss_max_hp) * 100;
     const bossVisual = getBossVisual(raid.boss_name, averageLevel);
 
