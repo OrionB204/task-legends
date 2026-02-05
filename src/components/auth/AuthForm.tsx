@@ -214,10 +214,21 @@ export function AuthForm() {
                         </TabsContent>
                     </Tabs>
                 </CardContent>
-                <CardFooter className="flex justify-center">
+                <CardFooter className="flex flex-col items-center gap-4">
                     <p className="text-xs text-muted-foreground text-center px-4">
                         Ao entrar, você concorda em completar suas tarefas e derrotar monstros! ⚔️
                     </p>
+
+                    <button
+                        onClick={() => {
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            window.location.reload();
+                        }}
+                        className="text-[8px] text-muted-foreground/50 hover:text-primary uppercase font-bold tracking-widest mt-2"
+                    >
+                        [ Limpar Cache de Login ]
+                    </button>
                 </CardFooter>
             </Card>
         </div>
