@@ -7,6 +7,8 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
+import { BackgroundMusic } from "@/components/game/BackgroundMusic";
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -22,6 +24,7 @@ const App = () => {
           </BrowserRouter>
           <Toaster />
           <Sonner />
+          <BackgroundMusic />
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>

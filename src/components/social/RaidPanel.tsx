@@ -127,9 +127,6 @@ export function RaidPanel() {
 
     return (
       <div className="space-y-4">
-        <div className="bg-blue-600 text-white p-2 text-center text-[10px] font-bold">
-          VERSÃO 22:40 - SEM SUPERNOVA (SINCRONIZADO)
-        </div>
         {/* Boss Display - Large and prominent */}
         <BossDisplay raid={myActiveRaid} averageLevel={averageLevel} />
 

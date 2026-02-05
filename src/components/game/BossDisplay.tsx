@@ -114,7 +114,6 @@ export function BossDisplay({ raid, averageLevel = 1 }: BossDisplayProps) {
                     <div className="flex items-center gap-1">
                         <Skull className="w-4 h-4 text-destructive" />
                         <span className="text-[10px] text-destructive font-bold">HP do Boss</span>
-                        <span className="text-[6px] text-primary/50 ml-2 uppercase font-black tracking-tighter">[ Sistema de Críticos Ativo V2 ]</span>
                     </div>
                     <span className="text-[10px] text-muted-foreground">
                         {raid.boss_current_hp.toLocaleString()} / {raid.boss_max_hp.toLocaleString()}
