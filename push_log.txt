@@ -1,6 +1,6 @@
 Everything up-to-date
 Everything up-to-date
-remote: error: Trace: aafb7d6d12c66f674d5365aa7875981988b2b14db6a9adb8051654706243bef7        
+remote: error: Trace: 210fdd53793e3dcb4e265d35f687a4b66fe73a6a7c0e48cda8bf06f3bd8d6084        
 remote: error: See https://gh.io/lfs for more information.        
 remote: error: File SITE_PARA_UPLOAD/assets/audio/background.mp3 is 175.72 MB; this exceeds GitHub's file size limit of 100.00 MB        
 remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
