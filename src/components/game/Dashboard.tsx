@@ -100,11 +100,11 @@ export function Dashboard() {
 
   const navItems = [
     { id: 'home', label: 'Início', icon: Home, badge: 0 },
+    { id: 'tasks', label: 'Missões', icon: Scroll, badge: tasksBadge, highlight: true },
     { id: 'pvp', label: 'PvP', icon: Swords, badge: pvpBadge },
     { id: 'raids', label: 'Raids', icon: Skull, badge: raidsBadge },
     { id: 'guild', label: 'Guilda', icon: Shield, badge: 0 },
     { id: 'social', label: 'Social', icon: Users, badge: socialBadge },
-    { id: 'tasks', label: 'Missões', icon: Scroll, badge: tasksBadge },
     { id: 'profile', label: 'Perfil', icon: User, badge: 0 },
   ];
 
@@ -126,20 +126,27 @@ export function Dashboard() {
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeView === item.id;
+                const isHighlight = 'highlight' in item && item.highlight;
                 return (
                   <button
                     key={item.id}
                     onClick={() => setActiveView(item.id as ActiveView)}
                     className={cn(
                       "flex flex-col items-center gap-1 px-3 py-2 transition-all relative group min-w-[64px]",
-                      isActive ? "text-primary scale-110" : "text-slate-400 hover:text-white"
+                      isActive ? "text-primary scale-110" : "text-slate-400 hover:text-white",
+                      isHighlight && !isActive && "text-emerald-400 hover:text-emerald-300"
                     )}
                   >
                     <div className={cn(
                       "p-1.5 rounded-lg transition-colors relative",
-                      isActive ? "bg-primary/10" : "group-hover:bg-white/5"
+                      isActive ? "bg-primary/10" : "group-hover:bg-white/5",
+                      isHighlight && "shadow-[0_0_12px_rgba(16,185,129,0.6)] animate-pulse"
                     )}>
-                      <Icon className={cn("w-6 h-6", isActive ? "stroke-[3px]" : "stroke-[2px]")} />
+                      <Icon className={cn(
+                        "w-6 h-6",
+                        isActive ? "stroke-[3px]" : "stroke-[2px]",
+                        isHighlight && !isActive && "text-emerald-400 drop-shadow-[0_0_6px_rgba(16,185,129,0.8)]"
+                      )} />
                       {item.badge > 0 && (
                         <span className="absolute -top-1 -right-1 bg-destructive text-white text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full border-2 border-[#1a103c] animate-pulse">
                           {item.badge}
@@ -148,7 +155,8 @@ export function Dashboard() {
                     </div>
                     <span className={cn(
                       "text-[9px] font-bold uppercase tracking-widest",
-                      isActive ? "text-primary glow-gold" : ""
+                      isActive ? "text-primary glow-gold" : "",
+                      isHighlight && !isActive && "text-emerald-400 drop-shadow-[0_0_4px_rgba(16,185,129,0.8)]"
                     )}>
                       {item.label}
                     </span>
