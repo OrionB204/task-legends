@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 import { BackgroundMusic } from "@/components/game/BackgroundMusic";
+import { DeathScreen } from "@/components/game/DeathScreen";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BackgroundMusic />
+          <DeathScreen />
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>

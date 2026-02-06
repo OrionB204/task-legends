@@ -6,6 +6,7 @@ import { useRaids } from '@/hooks/useRaids';
 import { useGuilds } from '@/hooks/useGuilds';
 import { usePvP } from '@/hooks/usePvP';
 import { useFriends } from '@/hooks/useFriends';
+import { useLowHpWarning } from '@/hooks/useLowHpWarning';
 import { ProfileCard } from './ProfileCard';
 import { InventoryPanel } from './InventoryPanel';
 import { TaskItem } from './TaskItem';
@@ -70,6 +71,13 @@ export function Dashboard() {
   const { myGuild } = useGuilds();
   const { pendingChallenges, activeDuel } = usePvP();
   const { pendingRequests: pendingFriends } = useFriends();
+  const { isLowHp, checkAndWarnLowHp } = useLowHpWarning();
+
+  // Handle navigation with HP check
+  const handleNavigation = (view: ActiveView) => {
+    checkAndWarnLowHp();
+    setActiveView(view);
+  };
 
   const [activeView, setActiveView] = useState<ActiveView>('home');
   const [shopOpen, setShopOpen] = useState(false);
@@ -130,7 +138,7 @@ export function Dashboard() {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => setActiveView(item.id as ActiveView)}
+                    onClick={() => handleNavigation(item.id as ActiveView)}
                     className={cn(
                       "flex flex-col items-center gap-1 px-3 py-2 transition-all relative group min-w-[64px]",
                       isActive ? "text-primary scale-110" : "text-slate-400 hover:text-white",

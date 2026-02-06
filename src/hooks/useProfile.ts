@@ -264,14 +264,14 @@ export function useProfile() {
 
   const revive = async () => {
     if (!profile) return;
-    if (profile.diamonds < 5) {
-      toast.error('Você precisa de 5 diamantes para reviver!');
+    if (profile.diamonds < 1) {
+      toast.error('Você precisa de 1 diamante para reviver!');
       return false;
     }
 
     try {
       await updateProfile.mutateAsync({
-        diamonds: profile.diamonds - 5,
+        diamonds: profile.diamonds - 1,
         current_hp: Math.floor(maxHp * 0.5)
       });
       toast.success('Você reviveu com 50% de HP! 🧟‍♂️✨');
