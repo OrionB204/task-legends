@@ -422,6 +422,19 @@ export function Dashboard() {
         </div>
       </main>
 
+      {/* Global Footer */}
+      <footer className="w-full py-4 mt-8 border-t border-white/10 bg-[#1a103c]/80">
+        <div className="container max-w-7xl mx-auto px-4 text-center">
+          <p className="text-[10px] md:text-xs text-muted-foreground/70 font-medium tracking-wide">
+            <span className="text-emerald-500 font-bold">versão Beta 1.0.0</span>
+            <span className="mx-2">•</span>
+            <span className="text-primary font-bold">TaskLegends</span>
+            <span className="mx-2">•</span>
+            <span>Copyright © Todos os direitos reservados 2026</span>
+          </p>
+        </div>
+      </footer>
+
       {/* Modals & Dialogs */}
       <Shop open={shopOpen} onOpenChange={setShopOpen} defaultTab={shopTab} />
       <GameWiki open={wikiOpen} onOpenChange={setWikiOpen} />
