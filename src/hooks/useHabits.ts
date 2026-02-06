@@ -8,12 +8,16 @@ import { toast } from 'sonner';
 import { useEffect } from 'react';
 
 export type HabitFrequency = 'daily' | 'weekly' | 'monthly';
+export type HabitDifficulty = 'easy' | 'medium' | 'hard';
 
 export interface Habit {
   id: string;
   user_id: string;
   title: string;
+  description?: string;
   is_positive: boolean;
+  is_negative: boolean;
+  difficulty: HabitDifficulty;
   frequency: HabitFrequency;
   streak: number;
   times_completed: number;
@@ -117,7 +121,14 @@ export function useHabits() {
   };
 
   const createHabit = useMutation({
-    mutationFn: async (habit: { title: string; frequency?: HabitFrequency }) => {
+    mutationFn: async (habit: {
+      title: string;
+      description?: string;
+      frequency?: HabitFrequency;
+      difficulty?: HabitDifficulty;
+      is_positive?: boolean;
+      is_negative?: boolean;
+    }) => {
       if (!user) throw new Error('Not authenticated');
       if (!canCreateHabit()) {
         throw new Error('Limite de hábitos gratuitos atingido. Faça upgrade para PRO!');
@@ -128,8 +139,11 @@ export function useHabits() {
         .insert({
           user_id: user.id,
           title: habit.title,
+          description: habit.description || null,
           frequency: habit.frequency ?? 'daily',
-          is_positive: true,
+          difficulty: habit.difficulty ?? 'easy',
+          is_positive: habit.is_positive ?? true,
+          is_negative: habit.is_negative ?? true
         })
         .select()
         .single();

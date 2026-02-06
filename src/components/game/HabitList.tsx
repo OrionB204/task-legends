@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { useHabits, Habit, HabitFrequency } from '@/hooks/useHabits';
+import { useHabits, Habit, HabitFrequency, HabitDifficulty } from '@/hooks/useHabits';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -37,15 +38,35 @@ const FREQUENCY_ICONS: Record<HabitFrequency, string> = {
 
 export function HabitList({ onUpgrade }: HabitListProps) {
   const { habits, createHabit, completePositive, completeNegative, deleteHabit, isCompletedToday, canCreateHabit } = useHabits();
+
+  // Form State
   const [newHabit, setNewHabit] = useState('');
+  const [description, setDescription] = useState('');
   const [frequency, setFrequency] = useState<HabitFrequency>('daily');
+  const [difficulty, setDifficulty] = useState<HabitDifficulty>('easy');
+  const [isPositive, setIsPositive] = useState(true);
+  const [isNegative, setIsNegative] = useState(true);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleCreate = () => {
     if (!newHabit.trim()) return;
-    createHabit({ title: newHabit.trim(), frequency });
+    createHabit({
+      title: newHabit.trim(),
+      description: description.trim(),
+      frequency,
+      difficulty,
+      is_positive: isPositive,
+      is_negative: isNegative
+    });
+
+    // Reset form
     setNewHabit('');
+    setDescription('');
     setFrequency('daily');
+    setDifficulty('easy');
+    setIsPositive(true);
+    setIsNegative(true);
     setIsDialogOpen(false);
   };
 
@@ -79,42 +100,120 @@ export function HabitList({ onUpgrade }: HabitListProps) {
                 Novo Hábito
               </Button>
             </DialogTrigger>
-            <DialogContent className="pixel-dialog">
-              <DialogHeader>
-                <DialogTitle className="text-[12px]">Criar Hábito</DialogTitle>
+            <DialogContent className="pixel-dialog sm:max-w-[425px] border-4 border-[#3d2b7a] bg-[#1a103c] text-slate-100 p-0 overflow-hidden">
+              <DialogHeader className="bg-[#4d3b8a] p-4 text-white">
+                <DialogTitle className="text-base font-black tracking-wider uppercase flex items-center gap-2">
+                  <span className="text-xl">✨</span> Criar Hábito
+                </DialogTitle>
               </DialogHeader>
-              <div className="space-y-3">
-                <p className="text-[11px] text-primary/70 font-bold mb-2 uppercase leading-snug">
-                  Exemplo: ler 5 páginas do livro, estudar matemática, estudar inglês
-                </p>
-                <Input
-                  placeholder="Nome do hábito..."
-                  value={newHabit}
-                  onChange={(e) => setNewHabit(e.target.value)}
-                  className="pixel-border text-[10px] bg-input"
-                />
-                <div className="space-y-2">
-                  <label className="text-[8px] text-muted-foreground">Frequência</label>
-                  <Select value={frequency} onValueChange={(v) => setFrequency(v as HabitFrequency)}>
-                    <SelectTrigger className="pixel-border text-[10px]">
+
+              <div className="p-6 space-y-5">
+                {/* Title */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Título*</label>
+                  <Input
+                    placeholder="Adicionar um título"
+                    value={newHabit}
+                    onChange={(e) => setNewHabit(e.target.value)}
+                    className="pixel-border bg-[#2a1b52] border-slate-700 text-xs h-10 placeholder:text-slate-500 focus-visible:ring-primary"
+                  />
+                </div>
+
+                {/* Notes */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex justify-between">
+                    Observações
+                  </label>
+                  <Textarea
+                    placeholder="Adicionar notas"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className="pixel-border bg-[#2a1b52] border-slate-700 text-xs min-h-[80px] placeholder:text-slate-500 resize-none focus-visible:ring-primary"
+                  />
+                </div>
+
+                {/* +/- Buttons */}
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    onClick={() => setIsPositive(!isPositive)}
+                    className={cn(
+                      "flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all duration-200",
+                      isPositive
+                        ? "bg-[#2a1b52] border-primary text-primary shadow-[0_0_10px_rgba(139,92,246,0.3)]"
+                        : "bg-[#150d30] border-slate-700 text-slate-500 opacity-50 hover:opacity-75"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center font-black text-xl mb-1",
+                      isPositive ? "bg-primary text-white" : "bg-slate-700 text-slate-400"
+                    )}>+</div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Positivo</span>
+                  </button>
+
+                  <button
+                    onClick={() => setIsNegative(!isNegative)}
+                    className={cn(
+                      "flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all duration-200",
+                      isNegative
+                        ? "bg-[#2a1b52] border-destructive text-destructive shadow-[0_0_10px_rgba(239,68,68,0.3)]"
+                        : "bg-[#150d30] border-slate-700 text-slate-500 opacity-50 hover:opacity-75"
+                    )}
+                  >
+                    <div className={cn(
+                      "w-8 h-8 rounded-full flex items-center justify-center font-black text-xl mb-1",
+                      isNegative ? "bg-destructive text-white" : "bg-slate-700 text-slate-400"
+                    )}>-</div>
+                    <span className="text-[10px] font-bold uppercase tracking-wider">Negativo</span>
+                  </button>
+                </div>
+
+                {/* Difficulty */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Dificuldade</label>
+                  <Select value={difficulty} onValueChange={(v) => setDifficulty(v as HabitDifficulty)}>
+                    <SelectTrigger className="pixel-border bg-[#2a1b52] border-slate-700 text-xs h-10">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="pixel-border">
-                      {Object.entries(FREQUENCY_LABELS).map(([value, label]) => (
-                        <SelectItem key={value} value={value} className="text-[10px]">
-                          {FREQUENCY_ICONS[value as HabitFrequency]} {label}
-                        </SelectItem>
-                      ))}
+                    <SelectContent className="bg-[#1a103c] border-slate-700 text-slate-200">
+                      <SelectItem value="easy">Fácil ⭐️</SelectItem>
+                      <SelectItem value="medium">Médio ⭐️⭐️</SelectItem>
+                      <SelectItem value="hard">Difícil ⭐️⭐️⭐️</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <Button
-                  onClick={handleCreate}
-                  disabled={!newHabit.trim()}
-                  className="w-full pixel-button bg-primary hover:bg-primary/80 text-[10px]"
-                >
-                  Criar Hábito
-                </Button>
+
+                {/* Frequency/Reset */}
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Resetar Contador</label>
+                  <Select value={frequency} onValueChange={(v) => setFrequency(v as HabitFrequency)}>
+                    <SelectTrigger className="pixel-border bg-[#2a1b52] border-slate-700 text-xs h-10">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-[#1a103c] border-slate-700 text-slate-200">
+                      <SelectItem value="daily">Diariamente</SelectItem>
+                      <SelectItem value="weekly">Semanalmente</SelectItem>
+                      <SelectItem value="monthly">Mensalmente</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Footer Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setIsDialogOpen(false)}
+                    className="flex-1 h-10 text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-white hover:bg-white/5"
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    onClick={handleCreate}
+                    disabled={!newHabit.trim() || (!isPositive && !isNegative)}
+                    className="flex-[2] h-10 pixel-button bg-primary hover:bg-primary/90 text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/20"
+                  >
+                    Criar Hábito
+                  </Button>
+                </div>
               </div>
             </DialogContent>
           </Dialog>
@@ -183,27 +282,31 @@ function HabitItem({ habit, isCompleted, onPositive, onNegative, onDelete }: Hab
   return (
     <div
       className={cn(
-        'p-3 bg-card pixel-border flex items-center gap-3 transition-all',
+        'p-3 bg-card pixel-border flex items-center gap-3 transition-all relative overflow-hidden group',
         isCompleted && 'opacity-60 bg-accent/10',
         isShaking && 'animate-shake',
         isGlowing && 'animate-glow-pulse'
       )}
     >
-      {/* Positive Button (+) */}
-      <Button
-        size="sm"
-        variant="ghost"
-        className={cn(
-          'h-10 w-10 p-0 pixel-button text-lg font-bold',
-          isCompleted
-            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-            : 'bg-accent/20 hover:bg-accent/40 text-accent hover:text-accent'
-        )}
-        onClick={handlePositive}
-        disabled={isCompleted}
-      >
-        +
-      </Button>
+      {/* Description Tooltip or indicator could be added here */}
+
+      {/* Positive Button (+) - Only if is_positive */}
+      {habit.is_positive && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className={cn(
+            'h-10 w-10 p-0 pixel-button text-lg font-bold shrink-0',
+            isCompleted
+              ? 'bg-muted text-muted-foreground cursor-not-allowed'
+              : 'bg-accent/20 hover:bg-accent/40 text-accent hover:text-accent'
+          )}
+          onClick={handlePositive}
+          disabled={isCompleted}
+        >
+          +
+        </Button>
+      )}
 
       {/* Habit Info */}
       <div className="flex-1 min-w-0">
@@ -216,9 +319,14 @@ function HabitItem({ habit, isCompleted, onPositive, onNegative, onDelete }: Hab
           >
             {habit.title}
           </h3>
-          <span className="text-[8px] text-muted-foreground">
-            {FREQUENCY_ICONS[habit.frequency]}
+          <span className="text-[8px] text-muted-foreground" title={FREQUENCY_LABELS[habit.frequency] || habit.frequency}>
+            {FREQUENCY_ICONS[habit.frequency] || '📅'}
           </span>
+          {habit.difficulty && habit.difficulty !== 'easy' && (
+            <span className="text-[8px] text-amber-500 font-bold" title="Dificuldade">
+              {habit.difficulty === 'hard' ? '⭐️⭐️⭐️' : '⭐️⭐️'}
+            </span>
+          )}
         </div>
 
         <div className="flex items-center gap-3 mt-1">
@@ -229,34 +337,43 @@ function HabitItem({ habit, isCompleted, onPositive, onNegative, onDelete }: Hab
             </div>
           )}
           <div className="flex items-center gap-1 text-[8px] text-muted-foreground">
-            <span className="text-accent">✓ {habit.times_completed}</span>
-            <span>/</span>
-            <span className="text-destructive">✗ {habit.times_failed}</span>
+            {habit.is_positive && <span className="text-accent">✓ {habit.times_completed}</span>}
+            {habit.is_positive && habit.is_negative && <span>/</span>}
+            {habit.is_negative && <span className="text-destructive">✗ {habit.times_failed}</span>}
           </div>
         </div>
+
+        {/* Description Preview (if exists) */}
+        {habit.description && (
+          <p className="text-[8px] text-muted-foreground/70 truncate mt-0.5 max-w-[200px]">
+            {habit.description}
+          </p>
+        )}
       </div>
 
-      {/* Negative Button (-) */}
-      <Button
-        size="sm"
-        variant="ghost"
-        className={cn(
-          'h-10 w-10 p-0 pixel-button text-lg font-bold',
-          isCompleted
-            ? 'bg-muted text-muted-foreground cursor-not-allowed'
-            : 'bg-destructive/20 hover:bg-destructive/40 text-destructive hover:text-destructive'
-        )}
-        onClick={handleNegative}
-        disabled={isCompleted}
-      >
-        −
-      </Button>
+      {/* Negative Button (-) - Only if is_negative */}
+      {habit.is_negative && (
+        <Button
+          size="sm"
+          variant="ghost"
+          className={cn(
+            'h-10 w-10 p-0 pixel-button text-lg font-bold shrink-0',
+            isCompleted
+              ? 'bg-muted text-muted-foreground cursor-not-allowed'
+              : 'bg-destructive/20 hover:bg-destructive/40 text-destructive hover:text-destructive'
+          )}
+          onClick={handleNegative}
+          disabled={isCompleted}
+        >
+          −
+        </Button>
+      )}
 
       {/* Delete Button */}
       <Button
         size="sm"
         variant="ghost"
-        className="h-8 w-8 p-0 pixel-button bg-muted/50 hover:bg-destructive/20"
+        className="h-8 w-8 p-0 pixel-button bg-muted/50 hover:bg-destructive/20 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
         onClick={() => onDelete(habit.id)}
       >
         <Trash2 className="w-4 h-4 text-muted-foreground hover:text-destructive" />
