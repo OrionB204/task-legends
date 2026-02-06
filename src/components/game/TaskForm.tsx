@@ -73,12 +73,26 @@ export function TaskForm({ onSubmit, canCreate, isCreating, onUpgrade }: TaskFor
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 p-4 pixel-border bg-card">
-      <Input
-        placeholder="Nova tarefa..."
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="pixel-border text-[10px] bg-input"
-      />
+      <div className="space-y-1">
+        <Input
+          placeholder="Nova tarefa..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="pixel-border text-[10px] bg-input"
+        />
+        <p className="text-[8px] text-center font-medium px-2">
+          <span className="text-muted-foreground">Exemplos: </span>
+          <span className="text-emerald-400">Esportiva</span>
+          <span className="text-muted-foreground">, </span>
+          <span className="text-cyan-400">Dia a dia</span>
+          <span className="text-muted-foreground">, </span>
+          <span className="text-amber-400">Estudos</span>
+          <span className="text-muted-foreground">, </span>
+          <span className="text-purple-400">Afazeres</span>
+          <span className="text-muted-foreground">, </span>
+          <span className="text-pink-400">e muito mais!</span>
+        </p>
+      </div>
 
       <Textarea
         placeholder="Descrição (opcional)"
