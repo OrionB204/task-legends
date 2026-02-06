@@ -2,13 +2,10 @@
 // Setup: https://www.emailjs.com/
 import emailjs from '@emailjs/browser';
 
-// EmailJS Configuration
-// You need to create a free account at emailjs.com and get these IDs
-const EMAILJS_SERVICE_ID = 'service_tasklegends'; // Create a service connected to your email
-const EMAILJS_TEMPLATE_ID = 'template_support'; // Create a template
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Get from EmailJS dashboard
-
-const SUPPORT_EMAIL = 'fitquestplay@gmail.com';
+// EmailJS Configuration - CONFIGURED ✅
+const EMAILJS_SERVICE_ID = 'service_tasklegends';
+const EMAILJS_TEMPLATE_ID = 'template_hhdkvlq';
+const EMAILJS_PUBLIC_KEY = '0sHBrvhFAIz7JbXuX';
 
 interface TicketEmailData {
     ticketId: string;
@@ -23,35 +20,24 @@ interface TicketEmailData {
 }
 
 export async function sendTicketEmail(data: TicketEmailData): Promise<boolean> {
-    // Check if EmailJS is configured
-    if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-        console.log('[EmailService] EmailJS not configured, logging ticket instead:');
-        console.log('─'.repeat(50));
-        console.log(`📧 NEW SUPPORT TICKET`);
-        console.log(`To: ${SUPPORT_EMAIL}`);
-        console.log(`From: ${data.userEmail} (${data.username})`);
-        console.log(`Type: ${data.ticketType}`);
-        console.log(`Subject: ${data.subject}`);
-        console.log(`Description: ${data.description}`);
-        if (data.transactionId) console.log(`Transaction: ${data.transactionId}`);
-        if (data.reportedUserId) console.log(`Reported User: ${data.reportedUserId}`);
-        if (data.duelId) console.log(`Duel: ${data.duelId}`);
-        console.log('─'.repeat(50));
-        return true; // Don't block the flow
-    }
 
     try {
+        // Variables matching your EmailJS "Contact Us" template:
+        // {{title}} = subject line
+        // {{name}} = sender name  
+        // {{message}} = content
+        // {{email}} = reply-to email
         const templateParams = {
-            to_email: SUPPORT_EMAIL,
-            from_name: data.username,
-            from_email: data.userEmail,
-            ticket_id: data.ticketId.slice(0, 8),
-            ticket_type: getTicketTypeLabel(data.ticketType),
-            subject: data.subject,
-            message: data.description,
-            transaction_id: data.transactionId || 'N/A',
-            reported_user: data.reportedUserId || 'N/A',
-            duel_id: data.duelId || 'N/A',
+            title: `[${getTicketTypeLabel(data.ticketType)}] ${data.subject}`,
+            name: data.username,
+            email: data.userEmail,
+            message: `📋 ID: ${data.ticketId.slice(0, 8)}
+
+${data.description}
+
+${data.transactionId ? `💳 Transação: ${data.transactionId}` : ''}
+${data.reportedUserId ? `🚨 Usuário: ${data.reportedUserId}` : ''}
+${data.duelId ? `⚔️ Duelo: ${data.duelId}` : ''}`.trim(),
         };
 
         const response = await emailjs.send(
