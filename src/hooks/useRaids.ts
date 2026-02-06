@@ -71,10 +71,15 @@ export function useRaids() {
       if (!user) throw new Error('Not authenticated');
 
       const boss = BOSS_TEMPLATES[bossIndex];
-      const { data: raid, error } = await supabase
+      if (!boss) throw new Error('Boss não encontrado. Selecione um boss válido.');
+
+      console.log('[CreateRaid] Creating raid with boss:', boss.name);
+
+      // 1. Create the raid
+      const { data: raid, error: raidError } = await supabase
         .from('raids')
         .insert({
-          name,
+          name: name.trim(),
           boss_name: boss.name,
           boss_max_hp: boss.hp,
           boss_current_hp: boss.hp,
@@ -82,20 +87,33 @@ export function useRaids() {
           leader_id: user.id,
           status: 'active',
           deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          charge_meter: 0,
-          charge_deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString()
         } as any)
         .select()
         .single();
 
-      if (error) throw error;
+      if (raidError) {
+        console.error('[CreateRaid] Error creating raid:', raidError);
+        throw new Error(`Erro ao criar raid: ${raidError.message}`);
+      }
 
-      await supabase.from('raid_members').insert({
+      console.log('[CreateRaid] Raid created:', raid.id);
+
+      // 2. Add the creator as a raid member
+      const { error: memberError } = await supabase.from('raid_members').insert({
         raid_id: raid.id,
         user_id: user.id,
         is_leader: true,
+        damage_dealt: 0,
       });
 
+      if (memberError) {
+        console.error('[CreateRaid] Error adding member:', memberError);
+        // Try to delete the raid if member insert failed
+        await supabase.from('raids').delete().eq('id', raid.id);
+        throw new Error(`Erro ao adicionar líder: ${memberError.message}`);
+      }
+
+      console.log('[CreateRaid] Leader added successfully');
       return raid;
     },
     onSuccess: () => {
@@ -103,8 +121,9 @@ export function useRaids() {
       queryClient.invalidateQueries({ queryKey: ['raid_members'] });
       toast.success('⚔️ Raid criada! Convide heróis para ajudar.');
     },
-    onError: (error) => {
-      toast.error('Erro ao criar raid: ' + error.message);
+    onError: (error: any) => {
+      console.error('[CreateRaid] Mutation error:', error);
+      toast.error(error.message || 'Erro ao criar raid');
     },
   });
 
