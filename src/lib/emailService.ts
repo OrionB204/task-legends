@@ -20,13 +20,11 @@ interface TicketEmailData {
 }
 
 export async function sendTicketEmail(data: TicketEmailData): Promise<boolean> {
+    console.log('[EmailService] Preparing to send email...');
+    console.log('[EmailService] Ticket data received:', data);
 
     try {
-        // Variables matching your EmailJS "Contact Us" template:
-        // {{title}} = subject line
-        // {{name}} = sender name  
-        // {{message}} = content
-        // {{email}} = reply-to email
+        // Variables matching your EmailJS template
         const templateParams = {
             title: `[${getTicketTypeLabel(data.ticketType)}] ${data.subject}`,
             name: data.username,
@@ -40,6 +38,10 @@ ${data.reportedUserId ? `🚨 Usuário: ${data.reportedUserId}` : ''}
 ${data.duelId ? `⚔️ Duelo: ${data.duelId}` : ''}`.trim(),
         };
 
+        console.log('[EmailService] Template params:', templateParams);
+        console.log('[EmailService] Service ID:', EMAILJS_SERVICE_ID);
+        console.log('[EmailService] Template ID:', EMAILJS_TEMPLATE_ID);
+
         const response = await emailjs.send(
             EMAILJS_SERVICE_ID,
             EMAILJS_TEMPLATE_ID,
@@ -47,10 +49,11 @@ ${data.duelId ? `⚔️ Duelo: ${data.duelId}` : ''}`.trim(),
             EMAILJS_PUBLIC_KEY
         );
 
-        console.log('[EmailService] Email sent successfully:', response.status);
+        console.log('[EmailService] ✅ Email sent! Status:', response.status, 'Text:', response.text);
         return true;
-    } catch (error) {
-        console.error('[EmailService] Failed to send email:', error);
+    } catch (error: any) {
+        console.error('[EmailService] ❌ Failed to send email:', error);
+        console.error('[EmailService] Error details:', error?.text || error?.message || error);
         return false;
     }
 }
