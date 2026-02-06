@@ -80,7 +80,7 @@ export function TaskForm({ onSubmit, canCreate, isCreating, onUpgrade }: TaskFor
           onChange={(e) => setTitle(e.target.value)}
           className="pixel-border text-[10px] bg-input"
         />
-        <p className="text-[8px] text-center font-medium px-2">
+        <p className="text-xs text-center font-bold px-2 py-1 tracking-wide">
           <span className="text-muted-foreground">Exemplos: </span>
           <span className="text-emerald-400">Esportiva</span>
           <span className="text-muted-foreground">, </span>
@@ -89,8 +89,8 @@ export function TaskForm({ onSubmit, canCreate, isCreating, onUpgrade }: TaskFor
           <span className="text-amber-400">Estudos</span>
           <span className="text-muted-foreground">, </span>
           <span className="text-purple-400">Afazeres</span>
-          <span className="text-muted-foreground">, </span>
-          <span className="text-pink-400">e muito mais!</span>
+          <span className="text-muted-foreground">... </span>
+          <span className="text-pink-400 uppercase drop-shadow-md">Qualquer Tarefa!</span>
         </p>
       </div>
 
