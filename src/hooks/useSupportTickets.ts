@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import { sendTicketEmail } from '@/lib/emailService';
 
 export type TicketType = 'complaint' | 'bug' | 'user_report' | 'redemption_issue';
 
@@ -42,11 +43,10 @@ export function useSupportTickets() {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      console.log('[Support Debug] Fetched tickets from DB:', data);
       return data as SupportTicket[];
     },
     enabled: !!user,
-    refetchInterval: 5000, // Sync every 5 seconds
+    refetchInterval: 5000,
   });
 
   const createTicket = useMutation({
@@ -92,22 +92,20 @@ export function useSupportTickets() {
         .eq('id', user.id)
         .single();
 
-      // 3. Send email notification via Edge Function
+      // 3. Send email notification (simple EmailJS - no backend needed)
       try {
-        const { error: emailError } = await supabase.functions.invoke('send-ticket-email', {
-          body: {
-            ticket: data,
-            userEmail: user.email,
-            username: profile?.username || 'Usuário'
-          }
+        await sendTicketEmail({
+          ticketId: data.id,
+          ticketType: ticket.ticket_type,
+          subject: ticket.subject,
+          description: ticket.description,
+          userEmail: user.email || 'unknown',
+          username: profile?.username || 'Usuário',
+          transactionId: ticket.transaction_id,
+          reportedUserId: ticket.reported_user_id,
+          duelId: ticket.duel_id,
         });
-
-        if (emailError) {
-          console.error('[Support] Email notification failed:', emailError);
-          // Don't throw - ticket was created, email is secondary
-        } else {
-          console.log('[Support] Email notification sent successfully');
-        }
+        console.log('[Support] Email notification processed');
       } catch (emailErr) {
         console.error('[Support] Email notification error:', emailErr);
         // Don't throw - ticket was created, email is secondary
