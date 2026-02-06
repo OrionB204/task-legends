@@ -1,39 +1,87 @@
-// Background Music Component with simplified logic
+// Background Music Component with medieval fantasy theme
 import { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// Royalty-free medieval/fantasy music from Pixabay CDN
+// These are small files (~2-4MB) - relaxing medieval fantasy themes
+const MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3'; // Medieval Fantasy
+
+// Fallback URLs for medieval music (in case primary fails)
+const FALLBACK_URLS = [
+    'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3', // Epic Medieval
+    'https://cdn.pixabay.com/download/audio/2021/08/09/audio_946bd498c1.mp3', // Fantasy Orchestral
+];
 
 export function BackgroundMusic() {
     const [isMuted, setIsMuted] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+    const [currentUrlIndex, setCurrentUrlIndex] = useState(0);
+
+    const allUrls = [MUSIC_URL, ...FALLBACK_URLS];
 
     useEffect(() => {
-        console.log("BackgroundMusic montado!");
+        console.log("[Music] Component mounted");
         const audio = new Audio();
-        // Usando o arquivo local que será servido na raiz do site
-        audio.src = '/assets/audio/background.mp3';
         audio.loop = true;
-        audio.volume = 0.5;
-        audio.preload = 'auto';
+        audio.volume = 0.3;
+        audio.preload = 'none'; // Don't preload to save bandwidth
         audioRef.current = audio;
 
-        audio.addEventListener('error', (e) => console.log("Erro no áudio:", e));
-        audio.addEventListener('canplay', () => console.log("Áudio carregado!"));
+        audio.addEventListener('error', (e) => {
+            console.log("[Music] Error loading audio, trying fallback...", e);
+            // Try next URL on error
+            if (currentUrlIndex < allUrls.length - 1) {
+                setCurrentUrlIndex(prev => prev + 1);
+            }
+        });
+
+        audio.addEventListener('canplay', () => {
+            console.log("[Music] Audio ready to play!");
+            setIsLoading(false);
+        });
+
+        audio.addEventListener('playing', () => {
+            console.log("[Music] Now playing!");
+        });
 
         return () => {
-            console.log("BackgroundMusic desmontado!");
+            console.log("[Music] Component unmounted");
             audio.pause();
             audio.src = '';
             audioRef.current = null;
         };
     }, []);
 
-    const toggleMute = () => {
+    const toggleMute = async () => {
         const audio = audioRef.current;
         if (!audio) return;
 
         if (isMuted) {
-            audio.play().then(() => setIsMuted(false)).catch(console.error);
+            setIsLoading(true);
+            // Set source only when user clicks (saves bandwidth)
+            if (!audio.src) {
+                audio.src = allUrls[currentUrlIndex];
+            }
+            try {
+                await audio.play();
+                setIsMuted(false);
+            } catch (err) {
+                console.error("[Music] Playback failed:", err);
+                // Try fallback
+                if (currentUrlIndex < allUrls.length - 1) {
+                    setCurrentUrlIndex(prev => prev + 1);
+                    audio.src = allUrls[currentUrlIndex + 1];
+                    try {
+                        await audio.play();
+                        setIsMuted(false);
+                    } catch {
+                        console.error("[Music] All fallbacks failed");
+                    }
+                }
+            }
+            setIsLoading(false);
         } else {
             audio.pause();
             setIsMuted(true);
@@ -46,19 +94,22 @@ export function BackgroundMusic() {
                 variant="outline"
                 size="icon"
                 onClick={toggleMute}
-                className="w-10 h-10 rounded-full border-2 border-primary bg-background/80 backdrop-blur-sm shadow-xl hover:bg-muted"
-                title={isMuted ? "Tocar Música" : "Pausar Música"}
+                disabled={isLoading}
+                className="w-12 h-12 rounded-full border-2 border-primary/50 bg-gradient-to-br from-purple-900/90 to-indigo-900/90 backdrop-blur-sm shadow-[0_0_15px_rgba(139,92,246,0.4)] hover:shadow-[0_0_25px_rgba(139,92,246,0.6)] hover:border-primary transition-all duration-300"
+                title={isMuted ? "🎵 Tocar Música Medieval" : "🔇 Pausar Música"}
             >
-                {isMuted ? (
-                    <VolumeX className="w-6 h-6" />
+                {isLoading ? (
+                    <Music className="w-5 h-5 animate-spin text-primary" />
+                ) : isMuted ? (
+                    <VolumeX className="w-5 h-5 text-muted-foreground" />
                 ) : (
-                    <Volume2 className="w-6 h-6 animate-pulse" />
+                    <Volume2 className="w-5 h-5 text-primary animate-pulse" />
                 )}
             </Button>
             {!isMuted && (
-                <div className="absolute -top-8 left-0 right-0 text-center pointer-events-none">
-                    <span className="text-[8px] font-black uppercase text-primary glow-gold animate-bounce block">
-                        Tocando ♫
+                <div className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap pointer-events-none">
+                    <span className="text-[9px] font-black uppercase text-primary glow-gold animate-bounce block px-2 py-1 bg-background/80 rounded-full border border-primary/30">
+                        ♫ Medieval Theme ♫
                     </span>
                 </div>
             )}
