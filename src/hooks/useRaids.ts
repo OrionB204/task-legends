@@ -329,66 +329,20 @@ export function useRaids() {
     queryClient.invalidateQueries({ queryKey: ['raid_members'] });
   };
 
-  // Mutex para evitar múltiplos disparos simultâneos
-  const isCritProcessing = useRef(false);
+  // Boss Counter-Attack Mechanic
+  const handleBossCounterAttack = async (raidId: string, bossName: string) => {
+    if (!user) return;
 
-  const triggerBossRandomCrit = async () => {
-    // 1. Verificação de Segurança (Mutex)
-    if (isCritProcessing.current) return;
-    if (!user || !myActiveRaid) return;
+    // 10% chance to succeed
+    const isSuccess = Math.random() < 0.10;
+    const skillName = "Contra-Ataque Furioso";
 
-    try {
-      isCritProcessing.current = true;
-
-      // 15% chance
-      if (Math.random() > 0.15) return;
-
-      const todayStr = new Date().toISOString().split('T')[0];
-
-      // Refresh raid data to get latest crit count (Bloqueio Otimista)
-      const { data: raid } = await supabase
-        .from('raids')
-        .select('daily_crit_count, last_crit_reset_date, boss_name')
-        .eq('id', myActiveRaid.id)
-        .single();
-
-      if (!raid) return;
-      const raidData = raid as any;
-
-      // Reset diário lógico
-      let critCount = raidData.daily_crit_count || 0;
-      if (raidData.last_crit_reset_date !== todayStr) {
-        critCount = 0;
-      }
-
-      // 2. Limitação: 3 vezes ao dia (Check Rígido)
-      if (critCount >= 3) {
-        return;
-      }
-
-      // Boss Skills Mapping
-      const bossSkillNames: Record<string, string> = {
-        'Dragão de Fogo': 'Sopro de Plasma',
-        'Hydra de Código': 'Loop Infinito',
-        'Golem de Pedra': 'Terremoto de Dados',
-        'Fênix Sombria': 'Explosão Estelar',
-        'Kraken Abissal': 'Tsunami Binária',
-        'Ignis, o Devorador': 'Chamas do Esquecimento',
-        'A Hydra dos Loops Literários': 'Recursão Fatal',
-        'Sir Galen, o Cavaleiro da Inércia': 'Golpe da Preguiça',
-        'Xylo, o Olho Plasmático': 'Raio Desfocante',
-        'Glup, o Terror Geométrico': 'Prisão Poligonal',
-        'Vaelith, a Soberana Esmeralda': 'Bafejada Tóxica'
-      };
-
-      // Tenta pegar o nome mapeado, ou usa o nome do boss como prefixo se não achar, ou fallback genérico
-      const skillName = bossSkillNames[raidData.boss_name] || `Ataque de ${raidData.boss_name}`;
-
-      // Ação: 5% HP dano em todos os usuários
+    if (isSuccess) {
+      // SUCCESS: Deal 2% damage to all members
       const { data: members } = await supabase
         .from('raid_members')
         .select('user_id')
-        .eq('raid_id', myActiveRaid.id);
+        .eq('raid_id', raidId);
 
       if (members) {
         for (const m of members) {
@@ -399,7 +353,8 @@ export function useRaids() {
             .single();
 
           if (p) {
-            const damage = Math.max(1, Math.floor(p.max_hp * 0.05));
+            // 2% damage
+            const damage = Math.max(1, Math.floor(p.max_hp * 0.02));
             await supabase
               .from('profiles')
               .update({ current_hp: Math.max(0, p.current_hp - damage) })
@@ -408,46 +363,31 @@ export function useRaids() {
         }
       }
 
-      // Atualizar contador e Log (Incremento Atômico seria ideal, mas update normal serve se o mutex segurar o local)
-      const { error: updateError } = await supabase.from('raids').update({
-        daily_crit_count: critCount + 1,
-        last_crit_reset_date: todayStr
-      } as any).eq('id', myActiveRaid.id);
-
-      if (updateError) throw updateError;
-
-      // Log Sincronizado
+      // Log Success
       await supabase.from('raid_damage_logs' as any).insert({
-        raid_id: myActiveRaid.id,
-        user_id: user.id, // O log fica atrelado ao usuário que "triggou", mas identificado como Boss Attack no tipo
-        damage_amount: 5, // Valor simbólico de %
-        type: 'boss_skill', // Novo tipo específico para diferenciar nos logs
-        task_title: `🛑 BOSS USOU: ${skillName} (-5% HP em TODOS)`
+        raid_id: raidId,
+        user_id: user.id,
+        damage_amount: 0,
+        type: 'boss_skill',
+        task_title: `🔥 CRÍTICO! Boss acertou contra-ataque (-2% HP em todos)`
       });
 
-      await supabase.from('messages').insert({
-        channel_type: 'raid',
-        channel_id: myActiveRaid.id,
-        sender_id: 'SYSTEM',
-        content: `🔪 O Boss usou ${skillName}! Todo o grupo perdeu 5% de HP.`
-      });
-
-      toast.error(`⚔️ O BOSS CONTRA-ATACA! ${skillName} acerta o grupo!`, {
-        duration: 5000,
+      toast.error(`⚔️ O BOSS CONTRA-ATACA! Todos perderam 2% de HP!`, {
         style: { background: '#330000', color: '#ff4444', border: '1px solid red' }
       });
 
-      queryClient.invalidateQueries({ queryKey: ['raids'] });
-      queryClient.invalidateQueries({ queryKey: ['raid_damage_logs'] });
-
-    } catch (error) {
-      console.error("Erro no critico do boss:", error);
-    } finally {
-      // Delay pequeno para evitar "cliques duplos"
-      setTimeout(() => {
-        isCritProcessing.current = false;
-      }, 2000);
+    } else {
+      // FAILURE: Log failure
+      await supabase.from('raid_damage_logs' as any).insert({
+        raid_id: raidId,
+        user_id: user.id,
+        damage_amount: 0,
+        type: 'boss_miss', // New type for miss
+        task_title: `🛡️ Boss tentou contra-atacar e errou!`
+      });
     }
+
+    queryClient.invalidateQueries({ queryKey: ['raid_damage_logs'] });
   };
 
   useEffect(() => {
@@ -539,7 +479,7 @@ export function useRaids() {
     },
     inviteByEmail,
     damageLogs,
-    triggerBossRandomCrit,
+    handleBossCounterAttack,
     isCreating: createRaid.isPending,
   };
 }
