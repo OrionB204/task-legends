@@ -1,8 +1,8 @@
 Deploying container to Cloud Run service [tasklegends] in project [tasklegends] region [us-central1]
 Deploying...
-Setting IAM Policy............................done
-Creating Revision.................................................................done
+Setting IAM Policy......................done
+Creating Revision..........................................................................done
 Routing traffic.....done
 Done.
-Service [tasklegends] revision [tasklegends-00006-bxs] has been deployed and is serving 100 percent of traffic.
+Service [tasklegends] revision [tasklegends-00007-n2f] has been deployed and is serving 100 percent of traffic.
 Service URL: https://tasklegends-1086404721518.us-central1.run.app

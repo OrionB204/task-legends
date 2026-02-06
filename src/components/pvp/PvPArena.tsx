@@ -460,29 +460,31 @@ export function PvPArena() {
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide flex items-center gap-1">
                   <Lock className="w-3 h-3" /> Suas Tarefas Travadas ({myTasks.length}/{REQUIRED_TASKS})
                 </p>
-                <div className="space-y-1 max-h-28 overflow-y-auto">
+                <div className="space-y-1.5 max-h-40 overflow-y-auto">
                   {myTasks.map((task, idx) => (
                     <div
                       key={task.id}
                       className={cn(
-                        "flex items-center gap-2 p-1.5 rounded text-[10px] pixel-border",
+                        "flex items-start gap-2 p-2 rounded text-[10px] pixel-border",
                         task.completed
                           ? "bg-accent/20 border-accent/30"
                           : "bg-muted/20 border-muted/30"
                       )}
                     >
-                      <span className="text-muted-foreground font-bold">{idx + 1}.</span>
+                      <span className="text-muted-foreground font-bold shrink-0">{idx + 1}.</span>
                       <span className={cn(
-                        "flex-1 truncate",
+                        "flex-1 break-words leading-tight",
                         task.completed ? "text-accent" : "text-foreground"
                       )}>
-                        {task.task?.title || 'Tarefa sem título'}
+                        {task.task?.title || `Tarefa #${task.task_id?.slice(0, 8) || idx + 1}`}
                       </span>
-                      {task.completed ? (
-                        <Badge variant="outline" className="text-[8px] bg-accent/20 border-accent/50 px-1">✓</Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-[8px] bg-muted/20 px-1">Pendente</Badge>
-                      )}
+                      <div className="shrink-0">
+                        {task.completed ? (
+                          <Badge variant="outline" className="text-[8px] bg-accent/20 border-accent/50 px-1">✓</Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-[8px] bg-muted/20 px-1">Pendente</Badge>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -582,29 +584,31 @@ export function PvPArena() {
                 <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide flex items-center gap-1 justify-end">
                   Tarefas do Oponente ({opponentTasks.length}/{REQUIRED_TASKS}) <Lock className="w-3 h-3" />
                 </p>
-                <div className="space-y-1 max-h-28 overflow-y-auto">
+                <div className="space-y-1.5 max-h-40 overflow-y-auto">
                   {opponentTasks.map((task, idx) => (
                     <div
                       key={task.id}
                       className={cn(
-                        "flex items-center gap-2 p-1.5 rounded text-[10px] pixel-border",
+                        "flex items-start gap-2 p-2 rounded text-[10px] pixel-border",
                         task.completed
                           ? "bg-accent/20 border-accent/30"
                           : "bg-muted/20 border-muted/30"
                       )}
                     >
-                      <span className="text-muted-foreground font-bold">{idx + 1}.</span>
+                      <span className="text-muted-foreground font-bold shrink-0">{idx + 1}.</span>
                       <span className={cn(
-                        "flex-1 truncate",
+                        "flex-1 break-words leading-tight",
                         task.completed ? "text-accent" : "text-foreground"
                       )}>
-                        {task.task?.title || 'Tarefa sem título'}
+                        {task.task?.title || `Tarefa #${task.task_id?.slice(0, 8) || idx + 1}`}
                       </span>
-                      {task.completed ? (
-                        <Badge variant="outline" className="text-[8px] bg-accent/20 border-accent/50 px-1">✓</Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-[8px] bg-muted/20 px-1">Pendente</Badge>
-                      )}
+                      <div className="shrink-0">
+                        {task.completed ? (
+                          <Badge variant="outline" className="text-[8px] bg-accent/20 border-accent/50 px-1">✓</Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-[8px] bg-muted/20 px-1">Pendente</Badge>
+                        )}
+                      </div>
                     </div>
                   ))}
                 </div>
