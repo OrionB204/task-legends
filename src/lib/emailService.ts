@@ -3,7 +3,7 @@
 import emailjs from '@emailjs/browser';
 
 // EmailJS Configuration - CONFIGURED ✅
-const EMAILJS_SERVICE_ID = 'service_tasklegends';
+const EMAILJS_SERVICE_ID = 'tasklegends';
 const EMAILJS_TEMPLATE_ID = 'template_hhdkvlq';
 const EMAILJS_PUBLIC_KEY = '0sHBrvhFAIz7JbXuX';
 
