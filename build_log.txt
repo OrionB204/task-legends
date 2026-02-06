@@ -1,25 +1,25 @@
 Creating temporary archive of 323 file(s) totalling 18.5 MiB before compression.
 Some files were not included in the source upload.
 
-Check the gcloud log [C:\Users\david\AppData\Roaming\gcloud\logs\2026.02.06\09.39.50.449038.log] to see which files and the contents of the
+Check the gcloud log [C:\Users\david\AppData\Roaming\gcloud\logs\2026.02.06\10.19.12.440887.log] to see which files and the contents of the
 default gcloudignore file used (see `$ gcloud topic gcloudignore` to learn
 more).
 
-Uploading tarball of [.] to [gs://tasklegends_cloudbuild/source/1770381592.089524-023dc4dc028e4c3092105c8fb2896f1a.tgz]
-Created [https://cloudbuild.googleapis.com/v1/projects/tasklegends/locations/global/builds/8b47b0fa-6ff9-4f08-9063-43648560c468].
-Logs are available at [ https://console.cloud.google.com/cloud-build/builds/8b47b0fa-6ff9-4f08-9063-43648560c468?project=1086404721518 ].
+Uploading tarball of [.] to [gs://tasklegends_cloudbuild/source/1770383952.910599-986d6efcacd14a3daab7d6a70f0d10b8.tgz]
+Created [https://cloudbuild.googleapis.com/v1/projects/tasklegends/locations/global/builds/73f68316-60a5-4726-ae85-85acb4943d9d].
+Logs are available at [ https://console.cloud.google.com/cloud-build/builds/73f68316-60a5-4726-ae85-85acb4943d9d?project=1086404721518 ].
 Waiting for build to complete. Polling interval: 1 second(s).
 
 INFO: The service account running this build projects/tasklegends/serviceAccounts/1086404721518-compute@developer.gserviceaccount.com does not have permission to write logs to Cloud Logging. To fix this, grant the Logs Writer (roles/logging.logWriter) role to the service account.
 
 1 message(s) issued.
 ----------------------------- REMOTE BUILD OUTPUT ------------------------------
-starting build "8b47b0fa-6ff9-4f08-9063-43648560c468"
+starting build "73f68316-60a5-4726-ae85-85acb4943d9d"
 
 FETCHSOURCE
-Fetching storage object: gs://tasklegends_cloudbuild/source/1770381592.089524-023dc4dc028e4c3092105c8fb2896f1a.tgz#1770381603859537
-Copying gs://tasklegends_cloudbuild/source/1770381592.089524-023dc4dc028e4c3092105c8fb2896f1a.tgz#1770381603859537...
-/ [0 files][    0.0 B/ 16.5 MiB]                                                / [1 files][ 16.5 MiB/ 16.5 MiB]                                                
+Fetching storage object: gs://tasklegends_cloudbuild/source/1770383952.910599-986d6efcacd14a3daab7d6a70f0d10b8.tgz#1770383964130567
+Copying gs://tasklegends_cloudbuild/source/1770383952.910599-986d6efcacd14a3daab7d6a70f0d10b8.tgz#1770383964130567...
+/ [0 files][    0.0 B/ 16.5 MiB]                                                -- [1 files][ 16.5 MiB/ 16.5 MiB]                                                
 Operation completed over 1 objects/16.5 MiB.
 BUILD
 Already have image (with digest): gcr.io/cloud-builders/gcb-internal
@@ -36,9 +36,9 @@ dd71dde834b5: Pulling fs layer
 1e5a4c89cee5: Download complete
 f18232174bc9: Verifying Checksum
 f18232174bc9: Download complete
-f18232174bc9: Pull complete
 dd71dde834b5: Verifying Checksum
 dd71dde834b5: Download complete
+f18232174bc9: Pull complete
 dd71dde834b5: Pull complete
 1e5a4c89cee5: Pull complete
 25ff2da83641: Pull complete
@@ -46,13 +46,13 @@ Digest: sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
 Status: Downloaded newer image for node:18-alpine
  ee77c6cd7c18
 Step 2/12 : WORKDIR /app
- Running in b33a12b96c10
-Removing intermediate container b33a12b96c10
- 8f6ce30f3ce2
+ Running in b4056381e296
+Removing intermediate container b4056381e296
+ 3ad515aaadbe
 Step 3/12 : COPY package.json package-lock.json ./
- 679c8aef885e
+ cf4cc7383acc
 Step 4/12 : RUN npm ci
- Running in 27f8c5812d11
+ Running in 94c5d5e4113a
 [91mnpm warn EBADENGINE Unsupported engine {
 npm warn EBADENGINE   package: '@supabase/auth-js@2.93.3',
 npm warn EBADENGINE   required: { node: '>=20.0.0' },
@@ -92,7 +92,7 @@ npm warn EBADENGINE }
 [0m[91mnpm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
 [0m[91mnpm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
 [0m
-added 484 packages, and audited 485 packages in 16s
+added 484 packages, and audited 485 packages in 15s
 
 87 packages are looking for funding
   run `npm fund` for details
@@ -108,12 +108,12 @@ npm notice New major version of npm available! 10.8.2 -> 11.9.0
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.9.0
 npm notice To update run: npm install -g npm@11.9.0
 npm notice
-[0mRemoving intermediate container 27f8c5812d11
- fa9c5e25c18d
+[0mRemoving intermediate container 94c5d5e4113a
+ cb384e69dd45
 Step 5/12 : COPY . .
- c6553f023a50
+ 23c2f2edb73f
 Step 6/12 : RUN npm run build
- Running in b50e3d5fd689
+ Running in fd66c1012ecb
 
 > vite_react_shadcn_ts@0.0.3 build
 > vite build
@@ -123,25 +123,25 @@ transforming...
 rendering chunks...
 computing gzip size...
 dist/index.html                     1.21 kB ? gzip:   0.51 kB
-dist/assets/index-D_oLkiQN.css    107.19 kB ? gzip:  18.08 kB
+dist/assets/index-YlHDrYi4.css    108.08 kB ? gzip:  18.18 kB
 dist/assets/ai-judge-C_WoTBUs.js    0.42 kB ? gzip:   0.30 kB
-dist/assets/index-CS7oPTrZ.js     939.34 kB ? gzip: 266.94 kB
+dist/assets/index-Bmnj7aH3.js     940.63 kB ? gzip: 267.34 kB
 [91m
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
 - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
 - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
-[0m? built in 13.51s
-Removing intermediate container b50e3d5fd689
- 6c977150d14d
+[0m? built in 13.19s
+Removing intermediate container fd66c1012ecb
+ 007456650827
 Step 7/12 : FROM node:18-alpine AS runner
  ee77c6cd7c18
 Step 8/12 : WORKDIR /app
- Running in 90976e00de9a
-Removing intermediate container 90976e00de9a
- 6891a7257cfa
+ Running in e02b0dd90eb6
+Removing intermediate container e02b0dd90eb6
+ 5f2e6947a124
 Step 9/12 : RUN npm install -g serve
- Running in 8cabc82cd6b6
+ Running in 3ba5df53eb6f
 
 added 86 packages in 6s
 
@@ -152,43 +152,43 @@ npm notice New major version of npm available! 10.8.2 -> 11.9.0
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.9.0
 npm notice To update run: npm install -g npm@11.9.0
 npm notice
-[0mRemoving intermediate container 8cabc82cd6b6
- 0fcfeafbce17
+[0mRemoving intermediate container 3ba5df53eb6f
+ 573dbb3f7eb2
 Step 10/12 : COPY --from=builder /app/dist ./dist
- 5a442e6c8513
+ ab6e6c687d06
 Step 11/12 : EXPOSE 8080
- Running in 45cbc87d41d0
-Removing intermediate container 45cbc87d41d0
- 2971a534b590
+ Running in c6fbd8b72d69
+Removing intermediate container c6fbd8b72d69
+ e2998c29fcb3
 Step 12/12 : CMD ["serve", "-s", "dist", "-l", "8080"]
- Running in 8ddb5e8189f8
-Removing intermediate container 8ddb5e8189f8
- e89c8c6ebefd
-Successfully built e89c8c6ebefd
+ Running in b26bd3316895
+Removing intermediate container b26bd3316895
+ 68ce31fd5c91
+Successfully built 68ce31fd5c91
 Successfully tagged us-central1-docker.pkg.dev/tasklegends/cloud-run-source-deploy/tasklegends:latest
 PUSH
 Pushing us-central1-docker.pkg.dev/tasklegends/cloud-run-source-deploy/tasklegends
 The push refers to repository [us-central1-docker.pkg.dev/tasklegends/cloud-run-source-deploy/tasklegends]
-6dec133e5e9d: Preparing
-f5c47b43993d: Preparing
-a169d83aad06: Preparing
+114cac6e4ec1: Preparing
+23715ed67bd7: Preparing
+a6882b614ce3: Preparing
 82140d9a70a7: Preparing
 f3b40b0cdb1c: Preparing
 0b1f26057bd0: Preparing
 08000c18d16d: Preparing
-08000c18d16d: Layer already exists
-82140d9a70a7: Layer already exists
 f3b40b0cdb1c: Layer already exists
+82140d9a70a7: Layer already exists
+08000c18d16d: Layer already exists
 0b1f26057bd0: Layer already exists
-a169d83aad06: Pushed
-6dec133e5e9d: Pushed
-f5c47b43993d: Pushed
-latest: digest: sha256:5837e288626cf906f8070671e1ff4fb6961ad7fe735d52e3922d33cf2b633c92 size: 1787
+a6882b614ce3: Pushed
+114cac6e4ec1: Pushed
+23715ed67bd7: Pushed
+latest: digest: sha256:f6eb808dcd1060782d7d142ec25f96a37468587166036fa2599d68e90b11f56f size: 1787
 DONE
 --------------------------------------------------------------------------------
-ID: 8b47b0fa-6ff9-4f08-9063-43648560c468
-CREATE_TIME: 2026-02-06T12:40:05+00:00
-DURATION: 1M9S
-SOURCE: gs://tasklegends_cloudbuild/source/1770381592.089524-023dc4dc028e4c3092105c8fb2896f1a.tgz
+ID: 73f68316-60a5-4726-ae85-85acb4943d9d
+CREATE_TIME: 2026-02-06T13:19:24+00:00
+DURATION: 1M10S
+SOURCE: gs://tasklegends_cloudbuild/source/1770383952.910599-986d6efcacd14a3daab7d6a70f0d10b8.tgz
 IMAGES: us-central1-docker.pkg.dev/tasklegends/cloud-run-source-deploy/tasklegends (+1 more)
 STATUS: SUCCESS

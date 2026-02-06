@@ -60,10 +60,9 @@ export function useSupportTickets() {
     }) => {
       if (!user) throw new Error('Not authenticated');
 
-      const supabaseUrl = (supabase as any).supabaseUrl;
-      console.log('[Support Debug] App is sending to:', decodeURIComponent(supabaseUrl));
-      console.log('[Support Debug] Sending ticket:', ticket);
+      console.log('[Support] Creating ticket:', ticket);
 
+      // 1. Insert ticket into database
       const { data, error } = await supabase
         .from('support_tickets')
         .insert({
@@ -76,17 +75,53 @@ export function useSupportTickets() {
           duel_id: ticket.duel_id || null,
           status: 'open'
         })
-        .select();
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('[Support] Error creating ticket:', error);
+        throw error;
+      }
+
+      console.log('[Support] Ticket created:', data);
+
+      // 2. Get user profile for email notification
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('username')
+        .eq('id', user.id)
+        .single();
+
+      // 3. Send email notification via Edge Function
+      try {
+        const { error: emailError } = await supabase.functions.invoke('send-ticket-email', {
+          body: {
+            ticket: data,
+            userEmail: user.email,
+            username: profile?.username || 'Usuário'
+          }
+        });
+
+        if (emailError) {
+          console.error('[Support] Email notification failed:', emailError);
+          // Don't throw - ticket was created, email is secondary
+        } else {
+          console.log('[Support] Email notification sent successfully');
+        }
+      } catch (emailErr) {
+        console.error('[Support] Email notification error:', emailErr);
+        // Don't throw - ticket was created, email is secondary
+      }
+
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['support_tickets', user?.id] });
       toast.success('📨 Ticket enviado! Nossa equipe irá analisar em breve.');
     },
-    onError: () => {
-      toast.error('Erro ao enviar ticket');
+    onError: (error: any) => {
+      console.error('[Support] Mutation error:', error);
+      toast.error('Erro ao enviar ticket: ' + (error.message || 'Tente novamente'));
     },
   });
 
