@@ -230,6 +230,40 @@ export function useRaids() {
     if (newCounter >= 3) {
       await supabase.from('raid_members').update({ task_counter: 0 } as any).eq('raid_id', raidId).eq('user_id', user.id);
 
+      // Get current player stats including mana
+      const { data: currentProfile } = await supabase
+        .from('profiles')
+        .select('current_mana, max_mana, player_class, username')
+        .eq('user_id', user.id)
+        .single();
+
+      if (!currentProfile) return;
+
+      // Calculate mana cost (20% of max mana)
+      const manaCost = Math.floor(currentProfile.max_mana * 0.20);
+      const hasEnoughMana = currentProfile.current_mana >= manaCost;
+
+      if (!hasEnoughMana) {
+        // Not enough mana to cast skill
+        await supabase.from('messages').insert({
+          channel_type: 'raid',
+          channel_id: raidId,
+          sender_id: user.id,
+          content: `💔 ${currentProfile.username} tentou usar uma habilidade mas não tem mana suficiente! (${currentProfile.current_mana}/${manaCost})`
+        });
+        toast.error(`Mana insuficiente! (${currentProfile.current_mana}/${manaCost})`, {
+          duration: 3000
+        });
+        return;
+      }
+
+      // CONSUME MANA (20% of max)
+      await supabase
+        .from('profiles')
+        .update({ current_mana: currentProfile.current_mana - manaCost })
+        .eq('user_id', user.id);
+
+      // ACTIVATE CLASS SKILL
       if (profile?.player_class === 'mage') {
         const bonusDamage = Math.floor(finalDamage * 0.5);
         await dealDamageToBoss(raidId, bonusDamage, 'MAGIA: Eco Arcano');
@@ -237,8 +271,9 @@ export function useRaids() {
           channel_type: 'raid',
           channel_id: raidId,
           sender_id: user.id,
-          content: `🔮 ECO ARCANO! ${profile.username} liberou uma explosão de mana causando ${bonusDamage} de dano extra!`
+          content: `🔮 ECO ARCANO! ${profile.username} liberou uma explosão de mana causando ${bonusDamage} de dano extra! (-${manaCost} mana)`
         });
+        toast.success(`🔮 Eco Arcano ativado! -${manaCost} mana`, { duration: 3000 });
       } else if (profile?.player_class === 'rogue') {
         const bonusDamage = Math.floor(finalDamage * 0.3);
         await dealDamageToBoss(raidId, bonusDamage, 'RAJADA: Saraivada de Flechas');
@@ -246,8 +281,9 @@ export function useRaids() {
           channel_type: 'raid',
           channel_id: raidId,
           sender_id: user.id,
-          content: `🏹 SARAIVADA! ${profile.username} disparou uma rajada de flechas causando ${bonusDamage} de dano extra!`
+          content: `🏹 SARAIVADA! ${profile.username} disparou uma rajada de flechas causando ${bonusDamage} de dano extra! (-${manaCost} mana)`
         });
+        toast.success(`🏹 Saraivada ativada! -${manaCost} mana`, { duration: 3000 });
       } else if (profile?.player_class === 'cleric') {
         // Heal everyone in the raid by 10% of their current HP
         const { data: members } = await supabase.from('raid_members').select('user_id').eq('raid_id', raidId);
@@ -266,8 +302,27 @@ export function useRaids() {
           channel_type: 'raid',
           channel_id: raidId,
           sender_id: user.id,
-          content: `✨ ORAÇÃO COLETIVA! ${profile.username} curou 10% do HP de todos os membros da Raid!`
+          content: `✨ ORAÇÃO COLETIVA! ${profile.username} curou 10% do HP de todos os membros da Raid! (-${manaCost} mana)`
         });
+        toast.success(`✨ Oração Coletiva ativada! -${manaCost} mana`, { duration: 3000 });
+      } else if (profile?.player_class === 'warrior') {
+        // Warrior skill: +50% damage on next attack (already applied in finalDamage calculation)
+        await supabase.from('messages').insert({
+          channel_type: 'raid',
+          channel_id: raidId,
+          sender_id: user.id,
+          content: `⚔️ FÚRIA DO GUERREIRO! ${profile.username} aumentou seu poder de ataque! (-${manaCost} mana)`
+        });
+        toast.success(`⚔️ Fúria do Guerreiro ativada! -${manaCost} mana`, { duration: 3000 });
+      } else if (profile?.player_class === 'paladin') {
+        // Paladin skill: Shield allies (reduce next boss damage by 30%)
+        await supabase.from('messages').insert({
+          channel_type: 'raid',
+          channel_id: raidId,
+          sender_id: user.id,
+          content: `🛡️ ESCUDO SAGRADO! ${profile.username} protegeu o grupo! (-${manaCost} mana)`
+        });
+        toast.success(`🛡️ Escudo Sagrado ativado! -${manaCost} mana`, { duration: 3000 });
       }
     } else {
       await supabase.from('raid_members').update({ task_counter: newCounter } as any).eq('raid_id', raidId).eq('user_id', user.id);
@@ -333,57 +388,87 @@ export function useRaids() {
   const handleBossCounterAttack = async (raidId: string, bossName: string) => {
     if (!user) return;
 
-    // 10% chance to succeed
-    const isSuccess = Math.random() < 0.10;
-    const skillName = "Contra-Ataque Furioso";
+    // 10% chance for boss to attempt counter-attack
+    const attackAttempt = Math.random() < 0.10;
 
-    if (isSuccess) {
-      // SUCCESS: Deal 2% damage to all members
-      const { data: members } = await supabase
-        .from('raid_members')
-        .select('user_id')
-        .eq('raid_id', raidId);
-
-      if (members) {
-        for (const m of members) {
-          const { data: p } = await supabase
-            .from('profiles')
-            .select('current_hp, max_hp')
-            .eq('user_id', m.user_id)
-            .single();
-
-          if (p) {
-            // 2% damage
-            const damage = Math.max(1, Math.floor(p.max_hp * 0.02));
-            await supabase
-              .from('profiles')
-              .update({ current_hp: Math.max(0, p.current_hp - damage) })
-              .eq('user_id', m.user_id);
-          }
-        }
-      }
-
-      // Log Success
+    if (!attackAttempt) {
+      // Boss didn't even try
       await supabase.from('raid_damage_logs' as any).insert({
         raid_id: raidId,
         user_id: user.id,
         damage_amount: 0,
-        type: 'boss_skill',
-        task_title: `🔥 CRÍTICO! Boss acertou contra-ataque (-2% HP em todos)`
+        type: 'boss_miss',
+        task_title: `🛡️ Boss não tentou contra-atacar desta vez`
       });
+      queryClient.invalidateQueries({ queryKey: ['raid_damage_logs'] });
+      return;
+    }
 
-      toast.error(`⚔️ O BOSS CONTRA-ATACA! Todos perderam 2% de HP!`, {
+    // Boss IS attacking! Now check individual dodges based on Perception
+    const { data: members } = await supabase
+      .from('raid_members')
+      .select('user_id')
+      .eq('raid_id', raidId);
+
+    if (!members) return;
+
+    let totalDodged = 0;
+    let totalHit = 0;
+
+    for (const m of members) {
+      const { data: p } = await supabase
+        .from('profiles')
+        .select('current_hp, max_hp, perception, strength, intelligence, constitution, username')
+        .eq('user_id', m.user_id)
+        .single();
+
+      if (!p) continue;
+
+      // Calculate dodge chance based on Perception (0.5% per point, max 50%)
+      const dodgeChance = Math.min(p.perception * 0.005, 0.50);
+      const didDodge = Math.random() < dodgeChance;
+
+      if (didDodge) {
+        // DODGED!
+        totalDodged++;
+        await supabase.from('raid_damage_logs' as any).insert({
+          raid_id: raidId,
+          user_id: m.user_id,
+          damage_amount: 0,
+          type: 'boss_miss',
+          task_title: `🌀 ${p.username} esquivou do contra-ataque! (${Math.round(dodgeChance * 100)}% esquiva)`
+        });
+      } else {
+        // HIT! Take 2% damage
+        totalHit++;
+        const damage = Math.max(1, Math.floor(p.max_hp * 0.02));
+        await supabase
+          .from('profiles')
+          .update({ current_hp: Math.max(0, p.current_hp - damage) })
+          .eq('user_id', m.user_id);
+
+        await supabase.from('raid_damage_logs' as any).insert({
+          raid_id: raidId,
+          user_id: m.user_id,
+          damage_amount: damage,
+          type: 'boss_skill',
+          task_title: `💥 ${p.username} foi atingido pelo contra-ataque! (-${damage} HP)`
+        });
+      }
+    }
+
+    // Summary toast
+    if (totalHit > 0 && totalDodged > 0) {
+      toast.error(`⚔️ CONTRA-ATAQUE! ${totalHit} atingidos, ${totalDodged} esquivaram!`, {
         style: { background: '#330000', color: '#ff4444', border: '1px solid red' }
       });
-
+    } else if (totalHit > 0) {
+      toast.error(`⚔️ CONTRA-ATAQUE! ${totalHit} jogadores atingidos!`, {
+        style: { background: '#330000', color: '#ff4444', border: '1px solid red' }
+      });
     } else {
-      // FAILURE: Log failure
-      await supabase.from('raid_damage_logs' as any).insert({
-        raid_id: raidId,
-        user_id: user.id,
-        damage_amount: 0,
-        type: 'boss_miss', // New type for miss
-        task_title: `🛡️ Boss tentou contra-atacar e errou!`
+      toast.success(`🌀 Todos esquivaram do contra-ataque!`, {
+        style: { background: '#003300', color: '#44ff44', border: '1px solid green' }
       });
     }
 

@@ -125,8 +125,12 @@ export function useProfile() {
   // Calculate Bonus Stats from equipment (Local Logic First)
   const bonusStats = useMemo(() => {
     if (!profile) return {
-      strength: 0, intelligence: 0, constitution: 0, perception: 0,
-      agility: 0, vitality: 0, endurance: 0, hp: 0, mana: 0, damage: 0
+      strength: 0,
+      intelligence: 0,
+      constitution: 0,
+      perception: 0,
+      hp: 0,
+      mana: 0
     };
 
     const equippedIds = [
@@ -157,12 +161,8 @@ export function useProfile() {
       intelligence: 0,
       constitution: 0,
       perception: 0,
-      agility: 0,
-      vitality: 0,
-      endurance: 0,
       hp: 0,
-      mana: 0,
-      damage: 0
+      mana: 0
     });
   }, [profile]);
 

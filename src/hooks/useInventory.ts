@@ -94,10 +94,21 @@ export function useInventory() {
 
             // Consumable logic
             if (item.item_type === 'consumable') {
-                if (item.effect_type === 'heal_hp') {
-                    await healHp(item.effect_value);
-                } else if (item.effect_type === 'restore_mana') {
-                    await addMana(item.effect_value);
+                // Get effects from local SHOP_ITEMS
+                const localItem = SHOP_ITEMS.find(i => toSafeUUID(i.id) === inventoryItem.item_id);
+
+                if (localItem && localItem.effects && localItem.effects.length > 0) {
+                    const effect = localItem.effects[0];
+
+                    if (effect.attribute === 'hp') {
+                        console.log(`💝 Curando ${effect.value} HP`);
+                        await healHp(effect.value || 0);
+                    } else if (effect.attribute === 'mana') {
+                        console.log(`💧 Restaurando ${effect.value} Mana`);
+                        await addMana(effect.value || 0);
+                    }
+                } else {
+                    console.warn('⚠️ Item consumível sem efeitos:', item.name);
                 }
 
                 // Deduct quantity

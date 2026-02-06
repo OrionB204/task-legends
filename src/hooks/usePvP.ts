@@ -4,13 +4,13 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useProfile } from './useProfile';
 import { useRaids } from './useRaids';
 import { PvPDuel, PvPSelectedTask, PVP_DAMAGE, REQUIRED_TASKS, MAX_HP } from '@/types/pvp';
-import { calculateManaGain, DIFFICULTY_MULTIPLIERS } from '@/lib/gameFormulas';
+import { DIFFICULTY_MULTIPLIERS } from '@/lib/gameFormulas';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 
 export function usePvP() {
   const { user } = useAuth();
-  const { profile, addXp, addGold, addMana, addTrophies } = useProfile();
+  const { profile, addXp, addGold, addTrophies } = useProfile();
   const { myActiveRaid, dealDamageToBoss } = useRaids();
   const queryClient = useQueryClient();
 
@@ -411,14 +411,13 @@ export function usePvP() {
 
       if (globalTaskError) console.error("Erro ao atualizar tarefa global:", globalTaskError);
 
-      // 3. Apply rewards (XP, Gold, Mana)
+      // 3. Apply rewards (XP, Gold) - Mana only restores via consumables or level up
       const xpReward = pvpTask.task?.xp_reward || (difficulty === 'hard' ? 25 : 12);
       const goldReward = pvpTask.task?.gold_reward || (difficulty === 'hard' ? 12 : 5);
-      const manaReward = calculateManaGain(difficulty, profile.player_class, profile.intelligence);
+      // REMOVED: Mana reward - mana now only restores via consumables or level up
 
       await addXp(xpReward);
       await addGold(goldReward);
-      await addMana(manaReward);
 
       // 4. Apply damage to opponent
       const isChallenger = activeDuel.challenger_id === user.id;

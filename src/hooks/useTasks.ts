@@ -7,7 +7,6 @@ import { useRaids } from './useRaids';
 import {
   calculateXpGain,
   calculateGoldGain,
-  calculateManaGain,
   calculateDamage,
   calculateRaidDamage,
   TaskDifficulty,
@@ -34,7 +33,7 @@ export interface Task {
 
 export function useTasks() {
   const { user } = useAuth();
-  const { profile, addXp, addGold, addMana, takeDamage } = useProfile();
+  const { profile, addXp, addGold, takeDamage } = useProfile();
   const { myActiveRaid, dealDamageToBoss } = useRaids();
   const queryClient = useQueryClient();
 
@@ -189,11 +188,10 @@ export function useTasks() {
         // 1. Re-calculate rewards based on CURRENT attributes to be fair
         const xpGain = calculateXpGain(task.difficulty, profile.intelligence);
         const goldGain = calculateGoldGain(task.difficulty, profile.perception);
-        const manaGain = calculateManaGain(task.difficulty, profile.player_class, profile.intelligence);
+        // REMOVED: Mana gain - mana now only restores via consumables or level up
 
         await addXp(xpGain);
         await addGold(goldGain);
-        await addMana(manaGain);
 
         // 2. Deal damage to raid boss if in an active raid
         if (myActiveRaid) {
