@@ -1,0 +1,13 @@
+###############################################################
+# COLE SUAS CHAVES ABAIXO (SUBSTITUA O TEXTO DE EXEMPLO)
+###############################################################
+
+# 1. Chave Secreta do Stripe (Começa com sk_live_... ou sk_test_...)
+STRIPE_SECRET_KEY=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
+
+# 2. Chave Service Role do Supabase (A chave longa que você revela no painel)
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqcWNudnNldGhkZGhheHZ5dGxtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDIzNTUwNSwiZXhwIjoyMDg1ODExNTA1fQ.MVBx3scuyhhjyt_mDd9yqkyunjROnnV2r2hBd6Ex__w
+
+###############################################################
+# SALVE ESTE ARQUIVO (Ctrl+S) E FECHE DEPOIS DE COLAR
+###############################################################

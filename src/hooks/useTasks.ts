@@ -81,7 +81,9 @@ export function useTasks() {
     enabled: !!user,
   });
 
-  const pendingTasks = tasks.filter((t) => t.status === 'pending');
+  // Separate PvP tasks from regular pending tasks
+  const pvpTasks = tasks.filter((t) => t.status === 'pending' && t.is_pvp === true);
+  const pendingTasks = tasks.filter((t) => t.status === 'pending' && t.is_pvp !== true);
   const completedTasks = tasks.filter((t) => t.status === 'completed');
 
   // Check for passed deadlines periodically or on task update
@@ -276,6 +278,7 @@ export function useTasks() {
   return {
     tasks,
     pendingTasks,
+    pvpTasks,
     completedTasks,
     isLoading,
     canCreateTask,
