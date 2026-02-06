@@ -3,15 +3,11 @@ import { useState, useEffect, useRef } from 'react';
 import { Volume2, VolumeX, Music } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Royalty-free medieval/fantasy music from Pixabay CDN
-// These are small files (~2-4MB) - relaxing medieval fantasy themes
-const MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3'; // Medieval Fantasy
+// Local music file (added by user)
+const MUSIC_URL = '/music.mp3';
 
-// Fallback URLs for medieval music (in case primary fails)
-const FALLBACK_URLS = [
-    'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3', // Epic Medieval
-    'https://cdn.pixabay.com/download/audio/2021/08/09/audio_946bd498c1.mp3', // Fantasy Orchestral
-];
+// Fallback is no longer needed but kept empty for code compatibility
+const FALLBACK_URLS: string[] = [];
 
 export function BackgroundMusic() {
     const [isMuted, setIsMuted] = useState(true);
