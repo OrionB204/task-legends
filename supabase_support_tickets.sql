@@ -37,8 +37,15 @@ CREATE INDEX IF NOT EXISTS idx_support_tickets_user_id ON public.support_tickets
 CREATE INDEX IF NOT EXISTS idx_support_tickets_status ON public.support_tickets(status);
 CREATE INDEX IF NOT EXISTS idx_support_tickets_created ON public.support_tickets(created_at DESC);
 
+-- Users can update (close) their own tickets
+DROP POLICY IF EXISTS "Users can update own tickets" ON public.support_tickets;
+CREATE POLICY "Users can update own tickets" ON public.support_tickets
+FOR UPDATE TO authenticated
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
 -- Grant permissions
 GRANT ALL ON public.support_tickets TO authenticated;
 GRANT ALL ON public.support_tickets TO service_role;
 
-SELECT 'Support tickets table created successfully!' as result;
+SELECT 'Support tickets table updated successfully!' as result;

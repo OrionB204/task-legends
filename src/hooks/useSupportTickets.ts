@@ -133,11 +133,35 @@ export function useSupportTickets() {
     });
   };
 
+  // Close/archive a ticket
+  const closeTicket = useMutation({
+    mutationFn: async (ticketId: string) => {
+      if (!user) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('support_tickets')
+        .update({ status: 'closed' })
+        .eq('id', ticketId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['support_tickets', user?.id] });
+      toast.success('✅ Ticket fechado!');
+    },
+    onError: () => {
+      toast.error('Erro ao fechar ticket');
+    },
+  });
+
   return {
     tickets,
     isLoading,
     createTicket: createTicket.mutate,
+    closeTicket: closeTicket.mutate,
     reportPlayer,
     isCreating: createTicket.isPending,
+    isClosing: closeTicket.isPending,
   };
 }

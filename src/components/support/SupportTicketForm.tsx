@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { LifeBuoy, Send, Clock, CheckCircle } from 'lucide-react';
+import { LifeBuoy, Send, Clock, CheckCircle, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -36,13 +36,13 @@ const STATUS_COLORS = {
   closed: 'bg-muted text-muted-foreground',
 };
 
-export function SupportTicketForm({ 
-  open, 
+export function SupportTicketForm({
+  open,
   onOpenChange,
   defaultType,
-  defaultTransactionId 
+  defaultTransactionId
 }: SupportTicketFormProps) {
-  const { tickets, createTicket, isCreating } = useSupportTickets();
+  const { tickets, createTicket, closeTicket, isCreating } = useSupportTickets();
   const [isNewTicket, setIsNewTicket] = useState(false);
   const [ticketType, setTicketType] = useState<TicketType>(defaultType || 'complaint');
   const [subject, setSubject] = useState('');
@@ -51,7 +51,7 @@ export function SupportTicketForm({
 
   const handleSubmit = () => {
     if (!subject.trim() || !description.trim()) return;
-    
+
     createTicket({
       ticket_type: ticketType,
       subject: subject.trim(),
@@ -162,7 +162,7 @@ export function SupportTicketForm({
           {/* Tickets List */}
           <div className="space-y-2">
             <h4 className="text-[10px] font-bold text-muted-foreground">Seus Tickets</h4>
-            
+
             {tickets.length === 0 ? (
               <div className="p-6 pixel-border bg-card/50 text-center">
                 <LifeBuoy className="w-8 h-8 mx-auto text-muted-foreground mb-2" />
@@ -174,9 +174,20 @@ export function SupportTicketForm({
               tickets.map((ticket) => (
                 <div
                   key={ticket.id}
-                  className="p-3 pixel-border bg-card space-y-2"
+                  className="p-3 pixel-border bg-card space-y-2 relative group"
                 >
-                  <div className="flex items-start justify-between gap-2">
+                  {/* Close Button */}
+                  {ticket.status !== 'closed' && (
+                    <button
+                      onClick={() => closeTicket(ticket.id)}
+                      className="absolute top-1 right-1 p-1 rounded-full bg-red-500/20 hover:bg-red-500/40 text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition-all"
+                      title="Fechar ticket"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  )}
+
+                  <div className="flex items-start justify-between gap-2 pr-6">
                     <div className="flex-1 min-w-0">
                       <h5 className="text-[10px] font-bold truncate">{ticket.subject}</h5>
                       <p className="text-[8px] text-muted-foreground">
@@ -186,19 +197,29 @@ export function SupportTicketForm({
                     <Badge className={cn('text-[8px] pixel-border shrink-0', STATUS_COLORS[ticket.status])}>
                       {ticket.status === 'open' && <Clock className="w-3 h-3 mr-1" />}
                       {ticket.status === 'resolved' && <CheckCircle className="w-3 h-3 mr-1" />}
-                      {ticket.status === 'open' ? 'Aberto' : 
-                       ticket.status === 'in_review' ? 'Em Análise' :
-                       ticket.status === 'resolved' ? 'Resolvido' : 'Fechado'}
+                      {ticket.status === 'open' ? 'Aberto' :
+                        ticket.status === 'in_review' ? 'Em Análise' :
+                          ticket.status === 'resolved' ? 'Resolvido' : 'Fechado'}
                     </Badge>
                   </div>
-                  
+
                   <p className="text-[8px] text-muted-foreground line-clamp-2">
                     {ticket.description}
                   </p>
-                  
-                  <p className="text-[8px] text-muted-foreground">
-                    {format(new Date(ticket.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                  </p>
+
+                  <div className="flex items-center justify-between">
+                    <p className="text-[8px] text-muted-foreground">
+                      {format(new Date(ticket.created_at), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                    </p>
+                    {ticket.status !== 'closed' && (
+                      <button
+                        onClick={() => closeTicket(ticket.id)}
+                        className="text-[8px] text-red-400 hover:text-red-300 flex items-center gap-1"
+                      >
+                        <X className="w-3 h-3" /> Fechar
+                      </button>
+                    )}
+                  </div>
                 </div>
               ))
             )}
