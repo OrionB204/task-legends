@@ -73,35 +73,15 @@ export function Shop({ open, onOpenChange, defaultTab = "weapons" }: ShopProps) 
       if (isGold && currentGold < price) throw new Error('Ouro insuficiente!');
       if (!isGold && currentDiamonds < price) throw new Error('Diamantes insuficientes!');
 
-      // --- SYNC STEP: Ensure item exists in shop_items DB table ---
-      const { data: dbItem } = await supabase
-        .from('shop_items')
-        .select('id')
-        .eq('id', safeItemId)
-        .maybeSingle();
+      // --- SYNC STEP SKIPPED: Assuming Admin/Seed handles shop_items population ---
+      // Inserting from client-side often fails due to RLS policies.
+      // If FK constraint fails, run the seed script.
+      console.log('Processando compra do item:', item.name, safeItemId);
 
-      if (!dbItem) {
-        console.log('Sincronizando item com o banco de dados:', item.name, safeItemId);
-        const { error: syncError } = await supabase
-          .from('shop_items')
-          .insert({
-            id: safeItemId,
-            name: item.name,
-            description: item.description,
-            item_type: item.type,
-            price_gold: isGold ? price : 0,
-            price_diamonds: !isGold ? price : 0,
-            effect_type: item.effects[0]?.attribute,
-            effect_value: item.effects[0]?.value,
-            image_url: item.icon, // Usando image_url para o ícone
-          });
-        if (syncError) {
-          console.error('Erro de sincronização:', syncError);
-          // Fallback: se o insert falhar, tentamos continuar se o perfil foi atualizado
-          // Mas aqui lançamos o erro para depuração
-          throw new Error('Falha técnica ao registrar item no catálogo. Contate o suporte.');
-        }
-      }
+      /* 
+       * REMOVED CLIENT-SIDE SYNC TO PREVENT PERMISSION ERRORS
+       * The shop_items table should be populated via SQL Seed.
+       */
 
       // 1. Update user currency first (Deduct money)
       const { error: profileError } = await supabase

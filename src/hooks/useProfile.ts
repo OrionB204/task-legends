@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import {
@@ -97,39 +98,73 @@ export function useProfile() {
   });
 
   // Calculate Bonus Stats from equipment
-  const bonusStats = (equippedItemsData || []).reduce((acc, item) => {
-    // Try to find the item in our rich local data for multiple effects
-    const localItem = SHOP_ITEMS.find(si => si.id === item.id);
+  // Helper to safely match IDs (UUID or String)
+  const findLocalItem = (id: string | null) => {
+    if (!id) return null;
+    const normalized = id.toLowerCase();
 
-    if (localItem && localItem.effects) {
-      localItem.effects.forEach(effect => {
-        const attr = effect.attribute as keyof typeof acc;
-        if (acc[attr] !== undefined) {
-          acc[attr] += effect.value;
-        }
-      });
-    } else {
-      // Fallback to database single effect if not found in local data
-      if (item.effect_type && item.effect_value) {
-        const type = item.effect_type as keyof typeof acc;
-        if (acc[type] !== undefined) {
-          acc[type] += item.effect_value;
-        }
+    // 1. Direct match
+    let found = SHOP_ITEMS.find(i => i.id.toLowerCase() === normalized);
+    if (found) return found;
+
+    // 2. Hash match (UUID)
+    found = SHOP_ITEMS.find(i => {
+      let hash = 0;
+      for (let j = 0; j < i.id.length; j++) {
+        hash = ((hash << 5) - hash) + i.id.charCodeAt(j);
+        hash |= 0;
       }
-    }
-    return acc;
-  }, {
-    strength: 0,
-    intelligence: 0,
-    constitution: 0,
-    perception: 0,
-    agility: 0,
-    vitality: 0,
-    endurance: 0,
-    hp: 0,
-    mana: 0,
-    damage: 0
-  });
+      const hex = Math.abs(hash).toString(16).padStart(8, '0');
+      const uuid = `${hex}-0000-0000-0000-000000000000`.substring(0, 36);
+      return uuid === normalized;
+    });
+
+    return found;
+  };
+
+  // Calculate Bonus Stats from equipment (Local Logic First)
+  const bonusStats = useMemo(() => {
+    if (!profile) return {
+      strength: 0, intelligence: 0, constitution: 0, perception: 0,
+      agility: 0, vitality: 0, endurance: 0, hp: 0, mana: 0, damage: 0
+    };
+
+    const equippedIds = [
+      profile.equipped_weapon,
+      profile.equipped_armor,
+      profile.equipped_shield,
+      profile.equipped_hat,
+      profile.equipped_skin,
+      profile.equipped_mount,
+      profile.equipped_legs,
+      profile.equipped_accessory,
+      profile.equipped_background
+    ];
+
+    return equippedIds.reduce((acc, id) => {
+      const item = findLocalItem(id);
+      if (item && item.effects) {
+        item.effects.forEach(effect => {
+          const attr = effect.attribute as keyof typeof acc;
+          if (acc[attr] !== undefined) {
+            acc[attr] += effect.value;
+          }
+        });
+      }
+      return acc;
+    }, {
+      strength: 0,
+      intelligence: 0,
+      constitution: 0,
+      perception: 0,
+      agility: 0,
+      vitality: 0,
+      endurance: 0,
+      hp: 0,
+      mana: 0,
+      damage: 0
+    });
+  }, [profile]);
 
   // Calculate derived stats
   const totalStats = {
