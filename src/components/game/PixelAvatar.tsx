@@ -37,6 +37,7 @@ interface PixelAvatarProps {
   size?: 'sm' | 'md' | 'lg' | 'xl' | number;
   animated?: boolean;
   showEffects?: boolean;
+  className?: string;
 }
 
 const SIZE_MAP = {
@@ -181,9 +182,11 @@ export function PixelAvatar({
   equippedAccessory,
   equippedBackground,
   equippedItemsData,
+  playerUsername, // Para logs
   size = 'md',
   animated = true,
   showEffects = true,
+  className,
 }: PixelAvatarProps) {
   const pixelSize = typeof size === 'number' ? size : SIZE_MAP[size];
 
@@ -225,7 +228,8 @@ export function PixelAvatar({
       className={cn(
         "pixel-avatar-container",
         animated && "avatar-animated",
-        hasLegendaryItem && showEffects && "legendary-glow"
+        hasLegendaryItem && showEffects && "legendary-glow",
+        className
       )}
       style={{
         width: pixelSize,

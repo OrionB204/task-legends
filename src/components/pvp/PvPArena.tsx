@@ -363,37 +363,41 @@ export function PvPArena() {
         )}
 
         {/* Arena Header */}
-        <div className="pixel-border bg-gradient-to-b from-destructive/10 to-background p-6">
-          <div className="flex items-center justify-center gap-4 mb-6 relative">
+        <div className="pixel-border bg-gradient-to-b from-destructive/10 to-background p-4 md:p-6">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 mb-4 md:mb-6 relative text-center">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setGuideOpen(true)}
-              className="absolute left-0 text-muted-foreground hover:text-primary"
+              className="absolute left-0 top-0 md:top-auto md:relative text-muted-foreground hover:text-primary scale-75 md:scale-100"
             >
               <HelpCircle className="w-5 h-5" />
             </Button>
-            <Skull className="w-8 h-8 text-destructive" />
-            <h3 className="text-2xl font-black text-destructive glow-gold tracking-widest uppercase">
-              ⚔️ ARENA DE COMBATE ⚔️
-            </h3>
-            <Skull className="w-8 h-8 text-destructive" />
+
+            <div className="flex items-center gap-2">
+              <Skull className="w-6 h-6 md:w-8 md:h-8 text-destructive hidden md:block" />
+              <h3 className="text-lg md:text-2xl font-black text-destructive glow-gold tracking-widest uppercase">
+                ⚔️ ARENA DE COMBATE ⚔️
+              </h3>
+              <Skull className="w-6 h-6 md:w-8 md:h-8 text-destructive hidden md:block" />
+            </div>
+
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setAttrOpen(true)}
-              className="absolute right-0 text-muted-foreground hover:text-accent"
+              className="absolute right-0 top-0 md:top-auto md:relative text-muted-foreground hover:text-accent scale-75 md:scale-100"
             >
               <Info className="w-5 h-5" />
             </Button>
           </div>
 
-          {/* Battle Grid */}
-          <div className="grid grid-cols-2 gap-8 relative items-start">
+          {/* Battle Grid - Flex Column on Mobile, Grid on Desktop */}
+          <div className="flex flex-col md:grid md:grid-cols-2 gap-6 md:gap-8 relative">
             {/* My Side */}
-            <div className="pixel-border bg-card p-5 space-y-4 shadow-xl">
-              <div className="flex items-center gap-4">
-                <div className="pixel-border-gold p-1 bg-background">
+            <div className="pixel-border bg-card p-3 md:p-5 space-y-3 md:space-y-4 shadow-xl">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="pixel-border-gold p-1 bg-background shrink-0">
                   <PixelAvatar
                     playerClass={profile?.player_class || 'apprentice'}
                     equippedHat={profile?.equipped_hat}
@@ -403,17 +407,18 @@ export function PvPArena() {
                     equippedLegs={profile?.equipped_legs}
                     equippedAccessory={profile?.equipped_accessory}
                     equippedBackground={profile?.equipped_background}
-                    size={80}
+                    size={60} // Mobile size default (responsive logic handled inside or keep small safe default)
+                    className="w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-xl font-black truncate">{profile?.username}</p>
+                    <p className="text-sm md:text-xl font-black truncate">{profile?.username}</p>
                     {activeDuel.challenger_id === profile?.user_id && (
-                      <Crown className="w-5 h-5 text-gold animate-bounce" />
+                      <Crown className="w-4 h-4 md:w-5 md:h-5 text-gold animate-bounce" />
                     )}
                   </div>
-                  <Badge variant="outline" className="text-xs mt-1 bg-primary/10 border-primary/30">
+                  <Badge variant="outline" className="text-[10px] md:text-xs mt-1 bg-primary/10 border-primary/30">
                     Nível {profile?.level}
                   </Badge>
                 </div>
@@ -421,11 +426,11 @@ export function PvPArena() {
 
               {/* HP Bar */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                <div className="flex justify-between text-[10px] md:text-xs font-bold uppercase tracking-wider">
                   <span className="text-hp flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-hp animate-pulse" /> HP</span>
                   <span>{myHp} / {MAX_HP}</span>
                 </div>
-                <div className="h-8 bg-black/50 pixel-border overflow-hidden relative shadow-inner">
+                <div className="h-4 md:h-8 bg-black/50 pixel-border overflow-hidden relative shadow-inner">
                   <div
                     className={cn(
                       "h-full transition-all duration-700 ease-out relative",
@@ -440,6 +445,7 @@ export function PvPArena() {
 
               {/* Photo Gallery */}
               <div className="pt-2 border-t border-white/10">
+                <div className="text-[10px] md:hidden font-bold mb-1 text-center text-muted-foreground uppercase">Suas Evidências</div>
                 <PhotoGallery
                   tasks={myTasks}
                   isOwn={true}
@@ -449,18 +455,28 @@ export function PvPArena() {
                 />
               </div>
             </div>
+            {/* === END OF MY SIDE CARD === */}
 
-            {/* VS Divider - Floating Center */}
-            <div className="absolute left-1/2 top-48 -translate-x-1/2 -translate-y-1/2 z-20 hidden lg:flex items-center justify-center pointer-events-none">
-              <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-yellow-600 glow-gold drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] animate-pulse">
+            {/* VS Divider - MOBILE ONLY (Visible block between cards) */}
+            <div className="md:hidden flex items-center justify-center py-3 relative z-10">
+              <div className="px-4 py-1 bg-background/80 rounded-full border-2 border-yellow-500">
+                <span className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-yellow-600">
+                  ⚔️ VS ⚔️
+                </span>
+              </div>
+            </div>
+
+            {/* VS Divider - DESKTOP ONLY (Absolute positioned overlay) */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 hidden md:flex items-center justify-center pointer-events-none">
+              <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-yellow-600 glow-gold drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] animate-pulse">
                 VS
               </div>
             </div>
 
             {/* Opponent Side */}
-            <div className="pixel-border bg-card p-5 space-y-4 shadow-xl">
-              <div className="flex items-center gap-4 flex-row-reverse text-right">
-                <div className="pixel-border p-1 bg-background relative">
+            <div className="pixel-border bg-card p-3 md:p-5 space-y-3 md:space-y-4 shadow-xl">
+              <div className="flex items-center gap-3 md:gap-4 flex-row-reverse text-right">
+                <div className="pixel-border p-1 bg-background relative shrink-0">
                   <PixelAvatar
                     playerClass={opponentProfile?.player_class || 'apprentice'}
                     equippedHat={opponentProfile?.equipped_hat}
@@ -470,28 +486,29 @@ export function PvPArena() {
                     equippedLegs={opponentProfile?.equipped_legs}
                     equippedAccessory={opponentProfile?.equipped_accessory}
                     equippedBackground={opponentProfile?.equipped_background}
-                    size={80}
+                    size={60}
+                    className="w-[60px] h-[60px] md:w-[80px] md:h-[80px]"
                   />
                   {/* Report Button overlay on avatar corner */}
                   <Button
                     size="icon"
                     variant="ghost"
                     onClick={() => setReportOpen(true)}
-                    className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-destructive text-white border-2 border-black hover:bg-destructive/80 z-10 shadow-lg"
+                    className="absolute -top-2 -right-2 h-6 w-6 md:h-8 md:w-8 rounded-full bg-destructive text-white border-2 border-black hover:bg-destructive/80 z-10 shadow-lg"
                     title="Denunciar Jogador"
                   >
-                    <Flag className="w-4 h-4" />
+                    <Flag className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 justify-end">
                     {activeDuel.challenger_id === opponentProfile?.user_id && (
-                      <Crown className="w-5 h-5 text-gold animate-bounce" />
+                      <Crown className="w-4 h-4 md:w-5 md:h-5 text-gold animate-bounce" />
                     )}
-                    <p className="text-xl font-black truncate">{opponentProfile?.username}</p>
+                    <p className="text-sm md:text-xl font-black truncate">{opponentProfile?.username}</p>
                   </div>
-                  <Badge variant="outline" className="text-xs mt-1 bg-destructive/10 border-destructive/30">
+                  <Badge variant="outline" className="text-[10px] md:text-xs mt-1 bg-destructive/10 border-destructive/30">
                     Nível {opponentProfile?.level}
                   </Badge>
                 </div>
@@ -499,14 +516,14 @@ export function PvPArena() {
 
               {/* HP Bar */}
               <div className="space-y-1">
-                <div className="flex justify-between text-xs font-bold uppercase tracking-wider">
+                <div className="flex justify-between text-[10px] md:text-xs font-bold uppercase tracking-wider">
                   <span>{opponentHp} / {MAX_HP}</span>
                   <span className="text-hp flex items-center gap-1">HP <span className="w-2 h-2 rounded-full bg-hp animate-pulse" /></span>
                 </div>
-                <div className="h-8 bg-black/50 pixel-border overflow-hidden relative shadow-inner">
+                <div className="h-4 md:h-8 bg-black/50 pixel-border overflow-hidden relative shadow-inner">
                   <div
                     className={cn(
-                      "h-full transition-all duration-700 ease-out relative ml-auto", // ml-auto to drain from right to left if desired, but standard left-to-right usually better. Keeping LTR for consistency
+                      "h-full transition-all duration-700 ease-out relative ml-auto",
                       opponentHp > 50 ? "bg-hp" : opponentHp > 25 ? "bg-gold" : "bg-destructive animate-pulse"
                     )}
                     style={{ width: `${(opponentHp / MAX_HP) * 100}%` }}
@@ -518,6 +535,7 @@ export function PvPArena() {
 
               {/* Photo Gallery */}
               <div className="pt-2 border-t border-white/10">
+                <div className="text-[10px] md:hidden font-bold mb-1 text-center text-muted-foreground uppercase">Evidências do Oponente</div>
                 <PhotoGallery
                   tasks={opponentTasks}
                   isOwn={false}

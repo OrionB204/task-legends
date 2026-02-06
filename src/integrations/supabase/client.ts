@@ -1,9 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
-// CHAVES FIXAS PARA GARANTIR CONEXÃO NO BUILD (Bypassing .env issues)
-const SUPABASE_URL = "https://btqgaoeewllurhhopjwn.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0cWdhb2Vld2xsdXJoaG9wanduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk5Njc2MzgsImV4cCI6MjA4NTU0MzYzOH0.H7dznukUFArIpKYYR1NfO_sNP5DL7hCfbzHwd-35EQE";
+// CHAVES FIXAS - PROJETO "ORIGINAL" (LJQ...)
+// Recuperadas do backup .env.local onde as contas antigas estão
+const SUPABASE_URL = "https://ljqcnvsethddhaxvytlm.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqcWNudnNldGhkZGhheHZ5dGxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMzU1MDUsImV4cCI6MjA4NTgxMTUwNX0.Mjxh-OD-bSUg9nNqD8TW_3C0yQuEogcR2MA-OFlYn3o";
 
 export const supabase = createClient<Database>(
   SUPABASE_URL,
@@ -19,4 +20,4 @@ export const supabase = createClient<Database>(
 );
 
 // Logging para debug seguro
-console.log("Supabase Client Initialized (Hardcoded Config)");
+console.log("Supabase Client: Connected to LJQ... (Original Database)");
